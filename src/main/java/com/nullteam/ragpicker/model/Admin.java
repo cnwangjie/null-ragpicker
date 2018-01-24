@@ -10,16 +10,16 @@ import java.util.Date;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Admin {
-    
+
     @Id
     @GeneratedValue
     private Integer id;
 
-    @OneToOne(mappedBy = "wx_user"
-            , cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    private WxUser wxUser;
+    @OneToOne
+    @JoinColumn(name = "wx_user_id", columnDefinition = "int(11) UNSIGNED", referencedColumnName = "id")
+    private WxUser info;
 
-    private Authority authority;
+//    private Authority authority;
 
     @Column(name = "created_at")
     @CreatedDate
@@ -28,4 +28,44 @@ public class Admin {
     @Column(name = "updated_at")
     @LastModifiedDate
     private Date updatedAt;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public WxUser getInfo() {
+        return info;
+    }
+
+    public void setInfo(WxUser info) {
+        this.info = info;
+    }
+
+//    public Authority getAuthority() {
+//        return authority;
+//    }
+//
+//    public void setAuthority(Authority authority) {
+//        this.authority = authority;
+//    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

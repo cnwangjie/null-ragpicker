@@ -1,6 +1,5 @@
 package com.nullteam.ragpicker.model;
 
-import com.sun.istack.internal.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,20 +19,18 @@ public class Address {
     @Column(columnDefinition = "int(11) UNSIGNED")
     private Integer id;
 
-    @Column(columnDefinition = "int(11) UNSIGNED COMMENT '用户id'", name = "user_id")
-    @NotNull
+    // TODO: change all Integer type to Long where column type is int(11) because max digits of Integer is less than 11
+
+    @Column(columnDefinition = "int(11) UNSIGNED COMMENT '用户id'", name = "user_id", nullable = false)
     private Integer userId;
 
-    @Column(columnDefinition = "int(6) UNSIGNED COMMENT '地点'")
-    @NotNull
+    @Column(columnDefinition = "int(6) UNSIGNED COMMENT '地点'", nullable = false)
     private Integer location;
 
-    @Column(columnDefinition = "varchar(255) COMMENT '具体位置信息'")
-    @NotNull
+    @Column(columnDefinition = "varchar(255) COMMENT '具体位置信息'", nullable = false)
     private String detail;
 
-    @Column(columnDefinition = "varchar(13) COMMENT '电话'")
-    @NotNull
+    @Column(columnDefinition = "varchar(13) COMMENT '电话'", nullable = false)
     private String tel;
 
     @Column(name = "created_at")
@@ -43,4 +40,61 @@ public class Address {
     @Column(name = "updated_at")
     @LastModifiedDate
     private Date updatedAt;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getLocation() {
+        return location;
+    }
+
+    public void setLocation(Integer location) {
+        this.location = location;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
 }

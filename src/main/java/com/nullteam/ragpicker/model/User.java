@@ -15,9 +15,9 @@ public class User {
     @GeneratedValue
     private Integer id;
 
-    @OneToOne(mappedBy = "wx_user"
-            , cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    private WxUser wxUser;
+    @OneToOne
+    @JoinColumn(name = "wx_user_id", columnDefinition = "int(11) UNSIGNED", referencedColumnName = "id")
+    private WxUser info;
 
     @Column(name = "created_at")
     @CreatedDate
@@ -26,4 +26,36 @@ public class User {
     @Column(name = "updated_at")
     @LastModifiedDate
     private Date updatedAt;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public WxUser getInfo() {
+        return info;
+    }
+
+    public void setInfo(WxUser info) {
+        this.info = info;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

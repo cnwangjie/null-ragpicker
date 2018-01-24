@@ -1,6 +1,5 @@
 package com.nullteam.ragpicker.model;
 
-import com.sun.istack.internal.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,16 +16,13 @@ public class WxUser {
     @Column(columnDefinition = "int(11) UNSIGNED")
     private Integer id;
 
-    @Column(columnDefinition = "char(30) COMMENT '微信openid'")
-    @NotNull
+    @Column(columnDefinition = "char(30) COMMENT '微信openid'", nullable = false)
     private String wxid;
 
-    @Column(columnDefinition = "varchar(255) COMMENT '微信昵称'")
-    @NotNull
+    @Column(columnDefinition = "varchar(255) COMMENT '微信昵称'", nullable = false)
     private String nickname;
 
-    @Column(columnDefinition = "varchar(255) COMMENT '微信头像'")
-    @NotNull
+    @Column(columnDefinition = "varchar(255) COMMENT '微信头像'", nullable = false)
     private String avatar;
 
     @Column(name = "created_at")
@@ -37,15 +33,52 @@ public class WxUser {
     @LastModifiedDate
     private Date updatedAt;
 
-    @OneToOne
-    @JoinColumn(name = "wx_user_id")
-    private User user;
+    public Integer getId() {
+        return id;
+    }
 
-    @OneToOne
-    @JoinColumn(name = "wx_user_id")
-    private Collector collector;
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    @OneToOne
-    @JoinColumn(name = "wx_user_id")
-    private Admin admin;
+    public String getWxid() {
+        return wxid;
+    }
+
+    public void setWxid(String wxid) {
+        this.wxid = wxid;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
 }

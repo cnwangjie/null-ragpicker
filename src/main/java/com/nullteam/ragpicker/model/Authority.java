@@ -1,13 +1,12 @@
 package com.nullteam.ragpicker.model;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@EntityListeners(AuditingEntityListener.class)
+//@Entity
 public class Authority {
 
     @Id
@@ -25,5 +24,29 @@ public class Authority {
 
     public enum AuthorityName {
         ROLE_ADMIN
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public AuthorityName getName() {
+        return name;
+    }
+
+    public void setName(AuthorityName name) {
+        this.name = name;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }
