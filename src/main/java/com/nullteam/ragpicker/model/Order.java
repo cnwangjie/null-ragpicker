@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "orders")
+@Table(name = "`order`")
 //@Table(indexes = {
 //        @Index(name = "USER_ID", columnList = "user_id"),
 //        @Index(name = "COLLECTOR_ID", columnList = "collector_id")

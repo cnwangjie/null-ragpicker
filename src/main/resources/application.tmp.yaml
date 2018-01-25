@@ -28,3 +28,12 @@ logging:
     org:
       springframework:
         web: DEBUG
+
+wx: # 微信公众号配置信息
+  appid:
+  appsecret:
+  token:
+  aeskey:
+
+config:
+  url: http://127.0.0.1:2006 # 应用url
