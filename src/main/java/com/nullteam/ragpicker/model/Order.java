@@ -22,11 +22,13 @@ public class Order {
     @Column(columnDefinition = "int(11) UNSIGNED")
     private Integer id;
 
-    @Column(columnDefinition = "int(11) UNSIGNED COMMENT '用户id'", name = "user_id", nullable = false)
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(columnDefinition = "int(11) UNSIGNED COMMENT '用户id'", name = "user_id", nullable = false, referencedColumnName = "id")
+    private User user;
 
-    @Column(columnDefinition = "int(11) UNSIGNED COMMENT '回收员id'", name = "collector_id", nullable = false)
-    private Integer collectorId;
+    @ManyToOne
+    @JoinColumn(columnDefinition = "int(11) UNSIGNED COMMENT '回收员id'", name = "collector_id", nullable = false, referencedColumnName = "id")
+    private Collector collector;
 
     @Column(columnDefinition = "int(6) UNSIGNED COMMENT '地点'", nullable = false)
     private Integer location;
@@ -35,13 +37,23 @@ public class Order {
     private String locDetail;
 
     @Column(columnDefinition = "varchar(255) COMMENT '备注'", nullable = false)
-    private String remark;
+    private String remark = "";
 
     @Column(columnDefinition = "char(30) COMMENT '订单编号'", name = "order_no", nullable = false)
     private String orderNo;
 
     @Column(columnDefinition = "tinyint(3) UNSIGNED COMMENT '订单状态'", nullable = false)
-    private Integer status;
+    private Integer status = Status.INIT;
+
+    public static class Status {
+        public static final int INIT = 0; // 刚被创建的初始状态
+        public static final int ALLOTTED = 10; // 已经指派回收员
+        public static final int GOTTED = 11; // 回收员已经回收
+        public static final int PAYED = 12; // 已经支付给用户
+        public static final int COMPLETED = 2; // 完成
+        public static final int CANCELED_BY_USER = 40; // 用户取消订单
+        public static final int CANCELED_BY_SYSTEMED = 41; // 系统取消订单
+    }
 
     @Column(columnDefinition = "int(11) UNSIGNED COMMENT '金额'")
     private Integer amount;
@@ -65,20 +77,20 @@ public class Order {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Integer getCollectorId() {
-        return collectorId;
+    public Collector getCollector() {
+        return collector;
     }
 
-    public void setCollectorId(Integer collectorId) {
-        this.collectorId = collectorId;
+    public void setCollector(Collector collector) {
+        this.collector = collector;
     }
 
     public Integer getLocation() {

@@ -19,6 +19,12 @@ public class Cate {
     @Column(columnDefinition = "varchar(100) COMMENT '分类名'", nullable = false)
     private String name;
 
+    @Column(columnDefinition = "varchar(10) COMMENT '计量单位'", nullable = false)
+    private String Unit;
+
+    @Column(columnDefinition = "int(11) UNSIGNED COMMENT '单位价格'")
+    private Integer Price;
+
     @Column(name = "created_at")
     @CreatedDate
     private Date createdAt;
@@ -57,6 +63,22 @@ public class Cate {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getUnit() {
+        return Unit;
+    }
+
+    public void setUnit(String unit) {
+        Unit = unit;
+    }
+
+    public Integer getPrice() {
+        return Price;
+    }
+
+    public void setPrice(Integer price) {
+        Price = price;
     }
 
 }

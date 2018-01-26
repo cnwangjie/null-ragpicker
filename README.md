@@ -10,3 +10,4 @@
 
  - [公众平台测试号](https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login)
  - [公众平台所用库](https://github.com/Wechat-Group/weixin-java-tools)
+ - [区域划分数据](https://github.com/mumuy/data_location)

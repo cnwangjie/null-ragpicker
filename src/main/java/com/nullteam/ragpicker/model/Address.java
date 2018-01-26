@@ -21,8 +21,9 @@ public class Address {
 
     // TODO: change all Integer type to Long where column type is int(11) because max digits of Integer is less than 11
 
-    @Column(columnDefinition = "int(11) UNSIGNED COMMENT '用户id'", name = "user_id", nullable = false)
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(columnDefinition = "int(11) UNSIGNED COMMENT '用户id'", name = "user_id", nullable = false, referencedColumnName = "id")
+    private User user;
 
     @Column(columnDefinition = "int(6) UNSIGNED COMMENT '地点'", nullable = false)
     private Integer location;
@@ -49,12 +50,12 @@ public class Address {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getLocation() {

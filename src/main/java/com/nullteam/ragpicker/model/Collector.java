@@ -13,6 +13,7 @@ public class Collector {
 
     @Id
     @GeneratedValue
+    @Column(columnDefinition = "int(11) UNSIGNED")
     private Integer id;
 
     @OneToOne
