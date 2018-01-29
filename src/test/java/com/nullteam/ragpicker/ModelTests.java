@@ -135,6 +135,5 @@ public class ModelTests {
         // TODO: test with JPA repository
         // TODO: test whether entity serialize result json is same with design
 
-        // TODO: travis.yml
     }
 }

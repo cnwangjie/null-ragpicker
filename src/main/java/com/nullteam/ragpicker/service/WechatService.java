@@ -14,6 +14,7 @@ import me.chanjar.weixin.mp.bean.menu.WxMpMenu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -56,6 +57,7 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
         return wxMpConfigStorage;
     }
 
+    @Bean
     public WxMpService getWxMpService() {
         WxMpService wxMpService = new WxMpServiceImpl();
         wxMpService.setWxMpConfigStorage(this.getWxMpConfigStorage());
@@ -65,6 +67,7 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
     public void createWxMenu() throws WxErrorException {
         WxMpService wxMpService = this.getWxMpService();
 
+        // TODO: use json to configure wechat menu
         WxMenu wxMenu = new WxMenu();
         WxMenuButton btn0 = new WxMenuButton();
         btn0.setName("用户服务");
@@ -93,7 +96,6 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
         btn11.setUrl(wxMpService.oauth2buildAuthorizationUrl(config.getUrl() + "/collector/order", WxConsts.OAuth2Scope.SNSAPI_BASE, null));
         btn1.getSubButtons().add(btn11);
         wxMenu.getButtons().add(btn1);
-
         WxMpMenu currentMenu = wxMpService.getMenuService().menuGet();
         if (!wxMenu.equals(currentMenu)) wxMpService.getMenuService().menuCreate(wxMenu);
 
@@ -101,10 +103,12 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        try {
-            this.createWxMenu();
-        } catch (WxErrorException e) {
-            e.printStackTrace();
+        if (!config.isAutoUpdateMenu()) {
+            try {
+                this.createWxMenu();
+            } catch (WxErrorException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
