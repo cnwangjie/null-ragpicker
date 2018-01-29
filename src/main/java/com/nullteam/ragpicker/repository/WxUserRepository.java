@@ -4,4 +4,5 @@ import com.nullteam.ragpicker.model.WxUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WxUserRepository extends JpaRepository<WxUser, Integer> {
+    WxUser findOneByWxid(String wxid);
 }

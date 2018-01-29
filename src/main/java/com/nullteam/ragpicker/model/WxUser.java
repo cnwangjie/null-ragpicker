@@ -33,6 +33,12 @@ public class WxUser {
     @LastModifiedDate
     private Date updatedAt;
 
+    @OneToOne
+    private User user;
+
+    @OneToOne
+    private Collector collector;
+
     public Integer getId() {
         return id;
     }
@@ -79,6 +85,22 @@ public class WxUser {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Collector getCollector() {
+        return collector;
+    }
+
+    public void setCollector(Collector collector) {
+        this.collector = collector;
     }
 
 }

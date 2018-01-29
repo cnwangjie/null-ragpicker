@@ -20,13 +20,13 @@ public class Collector {
     @JoinColumn(name = "wx_user_id", columnDefinition = "int(11) UNSIGNED", referencedColumnName = "id")
     private WxUser info;
 
-    @Column(columnDefinition = "varchar(30) COMMENT '姓名'", nullable = false)
+    @Column(columnDefinition = "varchar(30) COMMENT '姓名'")
     private String name;
 
-    @Column(columnDefinition = "int(6) UNSIGNED COMMENT '地点'", nullable = false)
+    @Column(columnDefinition = "int(6) UNSIGNED COMMENT '地点'")
     private Integer location;
 
-    @Column(columnDefinition = "varchar(13) COMMENT '电话'", nullable = false)
+    @Column(columnDefinition = "varchar(13) COMMENT '电话'")
     private String tel;
 
     @Column(name = "created_at")
