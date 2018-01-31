@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.Ordered;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Rollback(false)
 @Transactional
 @RunWith(SpringRunner.class)
+@org.springframework.core.annotation.Order(Ordered.HIGHEST_PRECEDENCE)
 public class ModelTests {
 
     private Faker faker = new Faker(new Locale("zh-CN"));

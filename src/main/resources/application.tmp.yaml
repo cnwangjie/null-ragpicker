@@ -35,6 +35,10 @@ wx: # 微信公众号配置信息
   token:
   aeskey:
 
+jwt:
+  header: Authorization # JWT 请求头
+  secret: ${random.value} # JWT secret
+
 config:
   auto-update-menu: true
   url: http://127.0.0.1:2006 # 应用url
