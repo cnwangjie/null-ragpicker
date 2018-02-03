@@ -1,5 +1,6 @@
 package com.nullteam.ragpicker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,6 +15,7 @@ import java.util.Date;
 })
 public class Address {
 
+    @JsonIgnore
     @Id
     @GeneratedValue
     @Column(columnDefinition = "int(11) UNSIGNED")
@@ -21,6 +23,7 @@ public class Address {
 
     // TODO: change all Integer type to Long where column type is int(11) because max digits of Integer is less than 11
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(columnDefinition = "int(11) UNSIGNED COMMENT '用户id'", name = "user_id", nullable = false, referencedColumnName = "id")
     private User user;
