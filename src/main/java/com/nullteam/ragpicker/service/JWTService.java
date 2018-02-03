@@ -8,6 +8,7 @@ import com.nullteam.ragpicker.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.DefaultClaims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,10 +37,16 @@ public class JWTService {
     }
 
     private Claims parseJWTToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(jwtConfig.getJWTSecret())
-                .parseClaimsJws(token)
-                .getBody();
+        Claims claims;
+        try {
+            claims = Jwts.parser()
+                    .setSigningKey(jwtConfig.getJWTSecret())
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            claims = new DefaultClaims();
+        }
+        return claims;
     }
 
     public String genUserToken(User user) {
@@ -61,12 +68,14 @@ public class JWTService {
     }
 
     public User getUserFromToken(String token) {
-        Integer id = Integer.valueOf(parseJWTToken(token).getSubject());
-        return userRepository.findOne(id);
+        String id = parseJWTToken(token).getSubject();
+        if (id == null) return null;
+        return userRepository.findOne(Integer.valueOf(id));
     }
 
     public Collector getCollectorFromToken(String token) {
-        Integer id = Integer.valueOf(parseJWTToken(token).getSubject());
-        return collectorRepository.findOne(id);
+        String id = parseJWTToken(token).getSubject();
+        if (id == null) return null;
+        return collectorRepository.findOne(Integer.valueOf(id));
     }
 }

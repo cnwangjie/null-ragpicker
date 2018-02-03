@@ -46,6 +46,9 @@ public class JWTServiceTests {
 
     @Test
     public void testJwtService() {
+        assertThat(jwtService.getIdentityFromToken("")).isNull();
+        assertThat(jwtService.getUserFromToken("")).isNull();
+        assertThat(jwtService.getCollectorFromToken("")).isNull();
         String token = jwtService.genUserToken(entityManager.find(User.class, 1));
         assertThat(token).isNotNull();
         assertThat(jwtService.getIdentityFromToken(token)).isEqualTo("user");

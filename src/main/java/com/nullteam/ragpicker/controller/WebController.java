@@ -6,6 +6,7 @@ import com.nullteam.ragpicker.model.WxUser;
 import com.nullteam.ragpicker.repository.CollectorRepository;
 import com.nullteam.ragpicker.repository.UserRepository;
 import com.nullteam.ragpicker.repository.WxUserRepository;
+import com.nullteam.ragpicker.service.JWTService;
 import com.nullteam.ragpicker.service.WechatService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
@@ -30,6 +31,9 @@ public class WebController {
 
     @Autowired
     private WechatService wechatService;
+
+    @Autowired
+    private JWTService jwtService;
 
     @Autowired
     private WxUserRepository wxUserRepository;
@@ -61,7 +65,7 @@ public class WebController {
             wxUser.setAvatar(wxMpUser.getHeadImgUrl());
             wxUserRepository.save(wxUser);
         }
-
+        String jwtToken;
         switch (identity) {
             case "user":
                 if (wxUser.getUser() == null) {
@@ -69,7 +73,7 @@ public class WebController {
                     user.setInfo(wxUser);
                     userRepository.save(user);
                 }
-                // gen jwt token
+                jwtToken = jwtService.genUserToken(wxUser.getUser());
                 break;
             case "collector":
                 if (wxUser.getCollector() == null) {
@@ -78,12 +82,12 @@ public class WebController {
                     collectorRepository.save(collector);
                     hashpath = "info/edit";
                 }
-                // gen jwt token
+                jwtToken = jwtService.genCollectorToken(wxUser.getCollector());
                 break;
             default:
                 return ResponseEntity.notFound().build();
         }
-        res.addCookie(new Cookie("user-token", "jwtotken"));
+        res.addCookie(new Cookie("jwt-token", jwtToken));
         return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("/web/#/" + identity + "/" + hashpath)).build();
     }
 }
