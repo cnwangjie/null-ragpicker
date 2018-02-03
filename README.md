@@ -4,7 +4,7 @@
 0. 创建配置文件`src/main/resources/application.yaml`
 0. 创建一个为`utf8mb4_ci`，名字为`rpdb`的数据库
 0. 安装依赖
-0. 执行单元测试并生成测试数据`mvn clean install`
+0. 生成测试数据`mvn test -Dtest=ModelTests`
 
 ### Reference
 

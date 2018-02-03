@@ -9,3 +9,5 @@ before_install:
   - mysql -e 'CREATE DATABASE rpdb COLLATE `utf8mb4_bin`;'
   - cp src/main/resources/application.tmp.yaml src/main/resources/application.yaml
   - "sed -i 's/: password/:/' src/main/resources/application.yaml"
+  - mvn test -Dtest=ModelTests
+  - rm src/test/java/com/nullteam/ragpicker/ModelTests.java # just need run once
