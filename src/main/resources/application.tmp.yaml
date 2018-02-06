@@ -41,4 +41,4 @@ jwt:
 
 config:
   auto-update-menu: true
-  url: http://127.0.0.1:2006 # 应用url
+  url: http://127.0.0.1:2006 # 应用url 不包含最后的 / （测试号可以使用ip）

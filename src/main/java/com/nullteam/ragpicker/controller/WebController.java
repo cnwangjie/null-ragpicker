@@ -8,6 +8,7 @@ import com.nullteam.ragpicker.repository.UserRepository;
 import com.nullteam.ragpicker.repository.WxUserRepository;
 import com.nullteam.ragpicker.service.JWTService;
 import com.nullteam.ragpicker.service.WechatService;
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
@@ -21,9 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.websocket.server.PathParam;
-import java.net.URI;
 
 @Controller
 @RequestMapping("/web")
@@ -45,25 +45,30 @@ public class WebController {
     private CollectorRepository collectorRepository;
 
     @ResponseBody
-    @RequestMapping(value = "/:identity/:hashpath*", method = RequestMethod.GET)
-    public ResponseEntity webpage(HttpServletResponse res,
-                                  @PathParam("identity") String identity,
-                                  @PathParam("hashpath") String hashpath,
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity webpage(HttpServletRequest req,
+                                  HttpServletResponse res,
+                                  @RequestParam("identity") String identity,
+                                  @RequestParam(name = "hashpath", defaultValue = "/", required = false) String hashpath,
                                   @RequestParam("code") String code) throws WxErrorException {
+
         WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wechatService.getWxMpService().oauth2getAccessToken(code);
-        WxMpUser wxMpUser = wechatService.getWxMpService().oauth2getUserInfo(wxMpOAuth2AccessToken, null);
-        String openid = wxMpUser.getOpenId();
+        String openid = wxMpOAuth2AccessToken.getOpenId();
         WxUser wxUser = wxUserRepository.findOneByWxid(openid);
         if (wxUser == null) {
-            if (wxMpUser.getNickname() == null) {;
-                return ResponseEntity.status(HttpStatus.FOUND).header("Location", "").build();
+            try {
+                WxMpUser wxMpUser = wechatService.getWxMpService().oauth2getUserInfo(wxMpOAuth2AccessToken, null);
+                wxUser = new WxUser();
+                wxUser.setNickname(wxMpUser.getNickname());
+                wxUser.setWxid(wxMpUser.getOpenId());
+                wxUser.setAvatar(wxMpUser.getHeadImgUrl());
+                wxUserRepository.save(wxUser);
+            } catch (Exception e) {
+                String userInfoOAuthPath = wechatService.getWxMpService()
+                        .oauth2buildAuthorizationUrl(req.getRequestURL() + "?identity=" + identity + "&hashpath=" + hashpath
+                                , WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
+                return ResponseEntity.status(HttpStatus.FOUND).header("Location", userInfoOAuthPath).build();
             }
-
-            wxUser = new WxUser();
-            wxUser.setNickname(wxMpUser.getNickname());
-            wxUser.setWxid(wxMpUser.getOpenId());
-            wxUser.setAvatar(wxMpUser.getHeadImgUrl());
-            wxUserRepository.save(wxUser);
         }
         String jwtToken;
         switch (identity) {
@@ -72,6 +77,7 @@ public class WebController {
                     User user = new User();
                     user.setInfo(wxUser);
                     userRepository.save(user);
+                    wxUser.setUser(user);
                 }
                 jwtToken = jwtService.genUserToken(wxUser.getUser());
                 break;
@@ -80,6 +86,7 @@ public class WebController {
                     Collector collector = new Collector();
                     collector.setInfo(wxUser);
                     collectorRepository.save(collector);
+                    wxUser.setCollector(collector);
                     hashpath = "info/edit";
                 }
                 jwtToken = jwtService.genCollectorToken(wxUser.getCollector());
@@ -88,6 +95,9 @@ public class WebController {
                 return ResponseEntity.notFound().build();
         }
         res.addCookie(new Cookie("jwt-token", jwtToken));
-        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("/web/#/" + identity + "/" + hashpath)).build();
+        System.out.println(jwtToken);
+        return ResponseEntity.ok().body(wxUser);
+        // TODO: render front end page
+//        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("/web/#/" + identity + "/" + hashpath)).build();
     }
 }

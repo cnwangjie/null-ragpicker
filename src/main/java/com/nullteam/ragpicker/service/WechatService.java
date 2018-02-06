@@ -11,6 +11,7 @@ import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
 import me.chanjar.weixin.mp.bean.menu.WxMpMenu;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
@@ -74,12 +75,12 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
         WxMenuButton btn00 = new WxMenuButton();
         btn00.setName("快速下单");
         btn00.setType(WxConsts.MenuButtonType.VIEW);
-        btn00.setUrl(wxMpService.oauth2buildAuthorizationUrl(config.getUrl() + "/user/order/create", WxConsts.OAuth2Scope.SNSAPI_BASE, null));
+        btn00.setUrl(wxMpService.oauth2buildAuthorizationUrl(config.getUrl() + "/web?identity=user&hashpath=/order/create", WxConsts.OAuth2Scope.SNSAPI_BASE, null));
         btn0.getSubButtons().add(btn00);
         WxMenuButton btn01 = new WxMenuButton();
         btn01.setName("个人中心");
         btn01.setType(WxConsts.MenuButtonType.VIEW);
-        btn01.setUrl(wxMpService.oauth2buildAuthorizationUrl(config.getUrl() + "/user", WxConsts.OAuth2Scope.SNSAPI_BASE, null));
+        btn01.setUrl(wxMpService.oauth2buildAuthorizationUrl(config.getUrl() + "/web?identity=user", WxConsts.OAuth2Scope.SNSAPI_BASE, null));
         btn0.getSubButtons().add(btn01);
         wxMenu.getButtons().add(btn0);
 
@@ -93,9 +94,10 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
         WxMenuButton btn11 = new WxMenuButton();
         btn11.setName("全部订单");
         btn11.setType(WxConsts.MenuButtonType.VIEW);
-        btn11.setUrl(wxMpService.oauth2buildAuthorizationUrl(config.getUrl() + "/collector/order", WxConsts.OAuth2Scope.SNSAPI_BASE, null));
+        btn11.setUrl(wxMpService.oauth2buildAuthorizationUrl(config.getUrl() + "/web?identity=collector&hashpath=/order", WxConsts.OAuth2Scope.SNSAPI_BASE, null));
         btn1.getSubButtons().add(btn11);
         wxMenu.getButtons().add(btn1);
+        LoggerFactory.getLogger(this.getClass()).info(wxMenu.toJson());
         WxMpMenu currentMenu = wxMpService.getMenuService().menuGet();
         if (!wxMenu.equals(currentMenu)) wxMpService.getMenuService().menuCreate(wxMenu);
 
@@ -103,7 +105,7 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        if (!config.isAutoUpdateMenu()) {
+        if (config.isAutoUpdateMenu()) {
             try {
                 this.createWxMenu();
             } catch (WxErrorException e) {
