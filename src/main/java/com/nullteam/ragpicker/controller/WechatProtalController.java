@@ -1,6 +1,6 @@
 package com.nullteam.ragpicker.controller;
 
-import com.nullteam.ragpicker.service.WechatService;
+import com.nullteam.ragpicker.service.serviceImpl.WechatService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

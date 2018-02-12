@@ -1,4 +1,4 @@
-package com.nullteam.ragpicker.service;
+package com.nullteam.ragpicker.service.serviceImpl;
 
 import com.nullteam.ragpicker.config.Config;
 import com.nullteam.ragpicker.config.WxConfig;

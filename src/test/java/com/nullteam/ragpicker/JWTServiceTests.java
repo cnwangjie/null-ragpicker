@@ -4,7 +4,7 @@ package com.nullteam.ragpicker;
 import com.nullteam.ragpicker.config.JWTConfig;
 import com.nullteam.ragpicker.model.Collector;
 import com.nullteam.ragpicker.model.User;
-import com.nullteam.ragpicker.service.JWTService;
+import com.nullteam.ragpicker.service.serviceImpl.JWTServiceImpl;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class JWTServiceTests {
 
     @Autowired
-    private JWTService jwtService;
+    private JWTServiceImpl jwtService;
 
     @PersistenceContext
     private EntityManager entityManager;

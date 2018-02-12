@@ -3,11 +3,11 @@ package com.nullteam.ragpicker.controller;
 import com.nullteam.ragpicker.model.Collector;
 import com.nullteam.ragpicker.model.User;
 import com.nullteam.ragpicker.model.WxUser;
-import com.nullteam.ragpicker.repository.CollectorRepository;
-import com.nullteam.ragpicker.repository.UserRepository;
-import com.nullteam.ragpicker.repository.WxUserRepository;
+import com.nullteam.ragpicker.service.CollectorService;
 import com.nullteam.ragpicker.service.JWTService;
-import com.nullteam.ragpicker.service.WechatService;
+import com.nullteam.ragpicker.service.UserService;
+import com.nullteam.ragpicker.service.WxUserService;
+import com.nullteam.ragpicker.service.serviceImpl.WechatService;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
@@ -36,13 +36,13 @@ public class WebController {
     private JWTService jwtService;
 
     @Autowired
-    private WxUserRepository wxUserRepository;
+    private WxUserService wxUserService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    private CollectorRepository collectorRepository;
+    private CollectorService collectorService;
 
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -54,7 +54,7 @@ public class WebController {
 
         WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wechatService.getWxMpService().oauth2getAccessToken(code);
         String openid = wxMpOAuth2AccessToken.getOpenId();
-        WxUser wxUser = wxUserRepository.findOneByWxid(openid);
+        WxUser wxUser = wxUserService.FindOneByWxid(openid);
         if (wxUser == null) {
             try {
                 WxMpUser wxMpUser = wechatService.getWxMpService().oauth2getUserInfo(wxMpOAuth2AccessToken, null);
@@ -62,7 +62,7 @@ public class WebController {
                 wxUser.setNickname(wxMpUser.getNickname());
                 wxUser.setWxid(wxMpUser.getOpenId());
                 wxUser.setAvatar(wxMpUser.getHeadImgUrl());
-                wxUserRepository.save(wxUser);
+                wxUserService.Save(wxUser);
             } catch (Exception e) {
                 String userInfoOAuthPath = wechatService.getWxMpService()
                         .oauth2buildAuthorizationUrl(req.getRequestURL() + "?identity=" + identity + "&hashpath=" + hashpath
@@ -76,7 +76,7 @@ public class WebController {
                 if (wxUser.getUser() == null) {
                     User user = new User();
                     user.setInfo(wxUser);
-                    userRepository.save(user);
+                    userService.Create(user);
                     wxUser.setUser(user);
                 }
                 jwtToken = jwtService.genUserToken(wxUser.getUser());
@@ -85,7 +85,7 @@ public class WebController {
                 if (wxUser.getCollector() == null) {
                     Collector collector = new Collector();
                     collector.setInfo(wxUser);
-                    collectorRepository.save(collector);
+                    collectorService.Save(collector);
                     wxUser.setCollector(collector);
                     hashpath = "info/edit";
                 }

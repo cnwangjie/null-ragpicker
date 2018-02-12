@@ -1,7 +1,7 @@
 package com.nullteam.ragpicker.middleware;
 
 import com.nullteam.ragpicker.config.JWTConfig;
-import com.nullteam.ragpicker.service.JWTService;
+import com.nullteam.ragpicker.service.serviceImpl.JWTServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,7 +25,7 @@ public class JWTAuthenticationTokenFilter extends OncePerRequestFilter {
     private JWTConfig jwtConfig;
 
     @Autowired
-    private JWTService jwtService;
+    private JWTServiceImpl jwtService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

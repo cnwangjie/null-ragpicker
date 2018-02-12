@@ -2,15 +2,13 @@ package com.nullteam.ragpicker.api;
 
 import com.nullteam.ragpicker.config.JWTConfig;
 import com.nullteam.ragpicker.model.User;
-import com.nullteam.ragpicker.service.JWTService;
+import com.nullteam.ragpicker.service.serviceImpl.JWTServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -34,7 +32,7 @@ public class AddressControllerTests {
     private MockMvc mockMvc;
 
     @Autowired
-    private JWTService jwtService;
+    private JWTServiceImpl jwtService;
 
     @PersistenceContext
     private EntityManager entityManager;
