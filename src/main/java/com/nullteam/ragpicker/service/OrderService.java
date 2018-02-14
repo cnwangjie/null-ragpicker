@@ -1,6 +1,6 @@
 package com.nullteam.ragpicker.service;
 
-
+import com.nullteam.ragpicker.model.Collector;
 import com.nullteam.ragpicker.model.Order;
 
 import java.util.List;
@@ -18,6 +18,8 @@ public interface OrderService {
     List<Order> FindOrdersByUser(Integer userId);
 
     List<Order> FindOrdersByCollector(Integer collectorId);
+
+    List<Order> getAllottedOrdersByCollector(Collector collector);
 
     List<Order> FindAll();
 

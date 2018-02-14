@@ -1,5 +1,6 @@
 package com.nullteam.ragpicker.service.serviceImpl;
 
+import com.nullteam.ragpicker.model.Collector;
 import com.nullteam.ragpicker.model.Order;
 import com.nullteam.ragpicker.repository.OrderRepository;
 import com.nullteam.ragpicker.service.OrderService;
@@ -47,6 +48,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> FindAll() {
         return orderRepository.findAll();
+    }
+
+
+    @Override
+    public List<Order> getAllottedOrdersByCollector(Collector collector) {
+        return orderRepository.findOrdersByCollectorIdAndStatusIs(collector.getId(), Order.Status.ALLOTTED);
     }
 
 

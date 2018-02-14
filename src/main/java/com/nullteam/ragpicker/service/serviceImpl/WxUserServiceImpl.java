@@ -13,7 +13,7 @@ public class WxUserServiceImpl implements WxUserService {
     private WxUserRepository wxUserRepository;
 
     @Override
-    public WxUser FindOneByWxid(String wxid) {
+    public WxUser getOneByWxId(String wxid) {
         return wxUserRepository.findOneByWxid(wxid);
     }
 

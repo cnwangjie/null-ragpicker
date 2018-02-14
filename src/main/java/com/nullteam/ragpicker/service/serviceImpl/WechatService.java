@@ -2,12 +2,14 @@ package com.nullteam.ragpicker.service.serviceImpl;
 
 import com.nullteam.ragpicker.config.Config;
 import com.nullteam.ragpicker.config.WxConfig;
+import com.nullteam.ragpicker.handler.CurrentOrderBtnClickEventHandler;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.bean.menu.WxMenuButton;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
+import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
 import me.chanjar.weixin.mp.bean.menu.WxMpMenu;
@@ -33,6 +35,11 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
 
     @Autowired
     private Config config;
+
+    @Autowired
+    private CurrentOrderBtnClickEventHandler currentOrderBtnClickEventHandler;
+
+    private static final String CURRENT_ORDER_EVENT_KEY = "current_order";
 
     public boolean verifyWechatToken(Map<String, String> params) throws NoSuchAlgorithmException {
         String token = wxConfig.getWxToken();
@@ -89,7 +96,7 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
         WxMenuButton btn10 = new WxMenuButton();
         btn10.setName("当前订单");
         btn10.setType(WxConsts.MenuButtonType.CLICK);
-        btn10.setKey("current_order");
+        btn10.setKey(CURRENT_ORDER_EVENT_KEY);
         btn1.getSubButtons().add(btn10);
         WxMenuButton btn11 = new WxMenuButton();
         btn11.setName("全部订单");
@@ -99,8 +106,21 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
         wxMenu.getButtons().add(btn1);
         LoggerFactory.getLogger(this.getClass()).info(wxMenu.toJson());
         WxMpMenu currentMenu = wxMpService.getMenuService().menuGet();
+        //noinspection EqualsBetweenInconvertibleTypes
         if (!wxMenu.equals(currentMenu)) wxMpService.getMenuService().menuCreate(wxMenu);
 
+    }
+
+    @Bean
+    public WxMpMessageRouter getWxMpMessageRouter() {
+        return new WxMpMessageRouter(this.getWxMpService())
+                .rule()
+                .async(false)
+                .msgType(WxConsts.XmlMsgType.EVENT)
+                .event(WxConsts.MenuButtonType.CLICK)
+                .eventKey(CURRENT_ORDER_EVENT_KEY)
+                .handler(currentOrderBtnClickEventHandler)
+                .end();
     }
 
     @Override

@@ -54,7 +54,7 @@ public class WebController {
 
         WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wechatService.getWxMpService().oauth2getAccessToken(code);
         String openid = wxMpOAuth2AccessToken.getOpenId();
-        WxUser wxUser = wxUserService.FindOneByWxid(openid);
+        WxUser wxUser = wxUserService.getOneByWxId(openid);
         if (wxUser == null) {
             try {
                 WxMpUser wxMpUser = wechatService.getWxMpService().oauth2getUserInfo(wxMpOAuth2AccessToken, null);

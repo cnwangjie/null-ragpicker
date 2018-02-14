@@ -2,6 +2,8 @@ package com.nullteam.ragpicker.controller;
 
 import com.nullteam.ragpicker.service.serviceImpl.WechatService;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
@@ -42,5 +47,24 @@ public class WechatProtalController {
         }
 
         return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+    }
+
+    @RequestMapping(value = "")
+    public void WechatMessage(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        // refer: https://github.com/Wechat-Group/weixin-java-tools-springmvc/blob/master/src/main/java/com/github/weixin/demo/controller/CoreController.java#L76-L96
+        if ("aes".equals(req.getParameter("encrypt_type"))) {
+            String msgSignature = req.getParameter("msg_signature");
+            String nonce = req.getParameter("nonce");
+            String timestamp = req.getParameter("timestamp");
+            WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(
+                    req.getInputStream(), wechatService.getWxMpConfigStorage(), timestamp, nonce,
+                    msgSignature);
+            WxMpXmlOutMessage outMessage = wechatService.getWxMpMessageRouter().route(inMessage);
+            res.getWriter().write(outMessage.toEncryptedXml(wechatService.getWxMpConfigStorage()));
+        } else {
+            WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(req.getInputStream());
+            WxMpXmlOutMessage outMessage = wechatService.getWxMpMessageRouter().route(inMessage);
+            res.getWriter().write(outMessage.toXml());
+        }
     }
 }
