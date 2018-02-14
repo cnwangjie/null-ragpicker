@@ -83,7 +83,7 @@ public class ModelTests {
             address.setLocation(locationSeed[i / 3]);
             address.setDetail(faker.address().streetAddress());
             address.setTel(faker.phoneNumber().cellPhone());
-            address.setUser(entityManager.find(User.class, faker.number().numberBetween(1, 30)));
+            address.setUser(entityManager.find(User.class, (int)(i / 1.5) + 1));
             entityManager.persist(address);
             entityManager.flush();
         }
