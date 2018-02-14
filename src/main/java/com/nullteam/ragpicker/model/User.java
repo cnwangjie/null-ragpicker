@@ -1,12 +1,16 @@
 package com.nullteam.ragpicker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
+@Transactional
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class User {
@@ -27,6 +31,10 @@ public class User {
     @Column(name = "updated_at")
     @LastModifiedDate
     private Date updatedAt;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Address> addresses;
 
     public Integer getId() {
         return id;
@@ -58,5 +66,13 @@ public class User {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 }

@@ -76,7 +76,7 @@ public class WebController {
                 if (wxUser.getUser() == null) {
                     User user = new User();
                     user.setInfo(wxUser);
-                    userService.Create(user);
+                    userService.create(user);
                     wxUser.setUser(user);
                 }
                 jwtToken = jwtService.genUserToken(wxUser.getUser());
@@ -85,7 +85,7 @@ public class WebController {
                 if (wxUser.getCollector() == null) {
                     Collector collector = new Collector();
                     collector.setInfo(wxUser);
-                    collectorService.Save(collector);
+                    collectorService.create(collector);
                     wxUser.setCollector(collector);
                     hashpath = "info/edit";
                 }

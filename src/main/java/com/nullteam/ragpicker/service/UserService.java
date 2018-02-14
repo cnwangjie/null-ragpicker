@@ -1,15 +1,14 @@
 package com.nullteam.ragpicker.service;
 
 import com.nullteam.ragpicker.model.User;
+import com.nullteam.ragpicker.model.WxUser;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface UserService {
 
-    User Create(User user);
+    @PreAuthorize("hasRole('ROLE_USER') and #userId == principal.id")
+    WxUser getUserInfoByUserId(Integer userId);
 
-    void Update(User user);
-
-    User Read(Integer id);
-
-    void Delete(Integer id);
+    User create(User user);
 
 }

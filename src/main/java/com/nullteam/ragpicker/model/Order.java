@@ -49,7 +49,7 @@ public class Order {
         public static final int INIT = 0; // 刚被创建的初始状态
         public static final int ALLOTTED = 10; // 已经指派回收员
         public static final int GOTTED = 11; // 回收员已经回收
-        public static final int PAYED = 12; // 已经支付给用户
+        public static final int PAID = 12; // 已经支付给用户
         public static final int COMPLETED = 2; // 完成
         public static final int CANCELED_BY_USER = 40; // 用户取消订单
         public static final int CANCELED_BY_SYSTEMED = 41; // 系统取消订单

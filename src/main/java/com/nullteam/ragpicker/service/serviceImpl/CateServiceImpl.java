@@ -14,9 +14,8 @@ public class CateServiceImpl implements CateService {
     @Autowired
     private CateRepository cateRepository;
 
-
     @Override
-    public List<Cate> FindAll() {
+    public List<Cate> getAll() {
         return cateRepository.findAll();
     }
 }

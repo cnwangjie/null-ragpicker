@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface CateService {
 
-    List<Cate> FindAll();
+    List<Cate> getAll();
 
 }

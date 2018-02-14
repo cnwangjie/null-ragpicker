@@ -1,6 +1,7 @@
 package com.nullteam.ragpicker.service.serviceImpl;
 
 import com.nullteam.ragpicker.model.User;
+import com.nullteam.ragpicker.model.WxUser;
 import com.nullteam.ragpicker.repository.UserRepository;
 import com.nullteam.ragpicker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,23 +14,16 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User Create(User user) {
+    public WxUser getUserInfoByUserId(Integer userId) {
+        User user = userRepository.findOne(userId);
+        if (user == null) return null;
+        return user.getInfo();
+    }
+
+    @Override
+    public User create(User user) {
         return userRepository.save(user);
     }
 
-    @Override
-    public void Update(User user) {
-        userRepository.save(user);
-    }
-
-    @Override
-    public User Read(Integer id) {
-        return userRepository.findOne(id);
-    }
-
-    @Override
-    public void Delete(Integer id) {
-        userRepository.delete(id);
-    }
 
 }

@@ -4,5 +4,5 @@ import com.nullteam.ragpicker.model.Collector;
 
 public interface CollectorService {
 
-    Collector Save(Collector collector);
+    Collector create(Collector collector);
 }

@@ -13,7 +13,7 @@ public class CollectorServiceImpl implements CollectorService {
     private CollectorRepository collectorRepository;
 
     @Override
-    public Collector Save(Collector collector) {
+    public Collector create(Collector collector) {
         return collectorRepository.save(collector);
     }
 }
