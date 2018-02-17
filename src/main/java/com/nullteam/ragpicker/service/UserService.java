@@ -6,6 +6,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface UserService {
 
+    User getOneById(Integer userId);
+
     @PreAuthorize("hasRole('ROLE_USER') and #userId == principal.id")
     WxUser getUserInfoByUserId(Integer userId);
 

@@ -17,6 +17,7 @@ public class WxUser {
     @Column(columnDefinition = "int(11) UNSIGNED")
     private Integer id;
 
+    @JsonIgnore
     @Column(columnDefinition = "char(30) COMMENT '微信openid'", nullable = false)
     private String wxid;
 
@@ -26,10 +27,12 @@ public class WxUser {
     @Column(columnDefinition = "varchar(255) COMMENT '微信头像'", nullable = false)
     private String avatar;
 
+    @JsonIgnore
     @Column(name = "created_at")
     @CreatedDate
     private Date createdAt;
 
+    @JsonIgnore
     @Column(name = "updated_at")
     @LastModifiedDate
     private Date updatedAt;

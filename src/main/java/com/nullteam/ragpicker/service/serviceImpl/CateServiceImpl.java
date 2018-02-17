@@ -18,4 +18,9 @@ public class CateServiceImpl implements CateService {
     public List<Cate> getAll() {
         return cateRepository.findAll();
     }
+
+    @Override
+    public Cate getOneById(Integer cateId) {
+        return cateRepository.findOne(cateId);
+    }
 }

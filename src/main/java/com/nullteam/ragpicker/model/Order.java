@@ -1,12 +1,13 @@
 package com.nullteam.ragpicker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -17,6 +18,7 @@ import java.util.Set;
 //})
 public class Order {
 
+    @JsonIgnore
     @Id
     @GeneratedValue
     @Column(columnDefinition = "int(11) UNSIGNED")
@@ -59,7 +61,7 @@ public class Order {
     private Integer amount;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private Set<OrderDetail> orderDetail;
+    private List<OrderDetail> orderDetail;
 
     @Column(name = "created_at")
     @CreatedDate
@@ -141,11 +143,11 @@ public class Order {
         this.amount = amount;
     }
 
-    public Set<OrderDetail> getOrderDetail() {
+    public List<OrderDetail> getOrderDetail() {
         return orderDetail;
     }
 
-    public void setOrderDetail(Set<OrderDetail> orderDetail) {
+    public void setOrderDetail(List<OrderDetail> orderDetail) {
         this.orderDetail = orderDetail;
     }
 

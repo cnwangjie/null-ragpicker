@@ -14,8 +14,13 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
+    public User getOneById(Integer userId) {
+        return userRepository.findOne(userId);
+    }
+
+    @Override
     public WxUser getUserInfoByUserId(Integer userId) {
-        User user = userRepository.findOne(userId);
+        User user = this.getOneById(userId);
         if (user == null) return null;
         return user.getInfo();
     }

@@ -8,4 +8,5 @@ public interface CateService {
 
     List<Cate> getAll();
 
+    Cate getOneById(Integer cateId);
 }

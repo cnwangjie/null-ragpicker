@@ -50,7 +50,7 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
         return signature.equals(sha1(rawString));
     }
 
-    public String sha1(String str) throws NoSuchAlgorithmException {
+    private String sha1(String str) throws NoSuchAlgorithmException {
         MessageDigest hash = MessageDigest.getInstance("SHA1");
         hash.update(str.getBytes());
         return new BigInteger(1, hash.digest()).toString(16);
