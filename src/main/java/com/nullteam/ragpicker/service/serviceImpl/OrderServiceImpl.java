@@ -52,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
         order = orderRepository.save(order);
         // TODO: perhaps should allow creating order if no collector in the location
         allotCollectorForOrder(order);
-        return order;
+        return orderRepository.save(order);
     }
 
     @Override
@@ -74,6 +74,25 @@ public class OrderServiceImpl implements OrderService {
         order.setCollector(collector);
         order.setStatus(Order.Status.ALLOTTED);
         orderRepository.save(order);
+    }
+
+    @Override
+    public Order completeOrder(Order order, Integer amount, List<OrderDetail> orderDetails) {
+        order.setAmount(amount);
+        order.setOrderDetail(orderDetails);
+        payOrder(order);
+        return orderRepository.save(order);
+    }
+
+    @Override
+    public void payOrder(Order order) {
+        // TODO: 微信企业支付接口
+    }
+
+    @Override
+    public Order cancelOrderByUser(Order order) {
+        order.setStatus(Order.Status.CANCELED_BY_USER);
+        return orderRepository.save(order);
     }
 
     @Override

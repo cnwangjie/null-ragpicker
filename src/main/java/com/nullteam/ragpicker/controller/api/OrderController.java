@@ -5,6 +5,7 @@ import com.nullteam.ragpicker.model.*;
 import com.nullteam.ragpicker.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,14 +74,9 @@ public class OrderController {
             orderDetail.setSum(sum);
             orderDetails.add(orderDetail);
         }
-        Order order = new Order();
-        order.setRemark(remark);
-        order.setUser(user);
-        order.setStatus(Order.Status.INIT);
-        order.setLocation(address.getLocation());
-        order.setLocDetail(address.getDetail());
-        order.setOrderDetail(orderDetails);
-        return null;
+        Order order = orderService.createNewOrder(userId, addressId, orderDetails, remark);
+        if (order == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        return ResponseEntity.ok(order);
     }
 
     /**
@@ -94,10 +90,14 @@ public class OrderController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/user/{userId}/cancel")
-    public ResponseEntity deleteOrder(@PathVariable Integer userId) {
-        // TODO: verify status & change status
-        return null;
+    @PostMapping("/order/{orderNo}/cancel")
+    public ResponseEntity deleteOrder(@PathVariable String orderNo) {
+        Order order = orderService.getOneByOrderNo(orderNo);
+        if (order == null) return ResponseEntity.notFound().build();
+        if (order.getStatus() != Order.Status.INIT) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        order = orderService.cancelOrderByUser(order);
+        if (order.getStatus() != Order.Status.CANCELED_BY_USER) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON_UTF8).body("{\"status\":\"success\"}");
     }
 
     @GetMapping("/collector/{collectorId}/order")
@@ -113,24 +113,39 @@ public class OrderController {
     @PostMapping("/order/{orderNo}/complete")
     public ResponseEntity completeOrder(@PathVariable String orderNo,
                                         @RequestParam Integer amount,
-                                        @RequestParam String orderDetailsJsonStr) {
+                                        @RequestParam String orderDetailsJsonStr) throws IOException {
         Order order = orderService.getOneByOrderNo(orderNo);
         if (order == null) return ResponseEntity.notFound().build();
-        // TODO:
-        order.setStatus(Order.Status.COMPLETED);
-        return new ResponseEntity(order, HttpStatus.OK);
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        List<HashMap<String, Integer>> list = new ObjectMapper().readValue(orderDetailsJsonStr, List.class);
+        for (HashMap<String, Integer> item : list) {
+            OrderDetail orderDetail = new OrderDetail();
+            Cate cate = cateService.getOneById(item.get("cate_id"));
+            if (cate == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            Integer sum = item.get("sum");
+            if (sum < 1 || sum > 1000) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            orderDetail.setCate(cate);
+            orderDetail.setSum(sum);
+            orderDetails.add(orderDetail);
+        }
+        order = orderService.completeOrder(order, amount, orderDetails);
+        if (Order.Status.COMPLETED != order.getStatus()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        return ResponseEntity.ok(order);
     }
 
     @GetMapping("/order")
     public ResponseEntity getAllOrders(@RequestParam Date start,
                                        @RequestParam Date end) {
+        List<Order> orders = orderService.getCompletedOrderByUpdatedTime(start, end);
         // TODO: authorize and transform
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(orders);
     }
 
-    @GetMapping("/order/{id}")
-    public ResponseEntity getOrderDetail(@PathVariable Integer id) {
-        // TODO: authorize and transform
-        return ResponseEntity.ok().build();
+    @GetMapping("/order/{orderNo}")
+    public ResponseEntity getOrderDetail(@PathVariable String orderNo) {
+        Order order = orderService.getOneByOrderNo(orderNo);
+        if (order == null) return ResponseEntity.notFound().build();
+        // TODO: transform
+        return ResponseEntity.ok(order);
     }
 }
