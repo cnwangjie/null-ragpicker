@@ -45,18 +45,27 @@ public class CurrentOrderBtnClickEventHandler implements WxMpMessageHandler {
         String msg;
         String openid = wxMessage.getOpenId();
         Collector collector = wxUserService.getOneByWxId(openid).getCollector();
-        if (collector == null) msg = NOT_COLLECTOR_REPLY;
-        List<Order> orders = orderService.getAllottedOrdersByCollector(collector);
-        if (orders.size() == 0) msg = NO_ORDER_REPLY;
-        Order nearlyOrder = orders.get(0);
-        String orderDetail = ""; // TODO: order detail formatter
-        msg = String.format(REPLY_TEMPLATE,
-                collector.getName(),
-                orders.size(),
-                new SimpleDateFormat(DATE_FORMAT_TEMPLATE).format(nearlyOrder.getCreatedAt()),
-                nearlyOrder.getLocDetail(),
-                orderDetail,
-                ""); // TODO: OAuth link to /collector/order/allotted
+        do {
+            if (collector == null) {
+                msg = NOT_COLLECTOR_REPLY;
+                break;
+            }
+            List<Order> orders = orderService.getAllottedOrdersByCollector(collector);
+            if (orders.size() == 0) {
+                msg = NO_ORDER_REPLY;
+                break;
+            }
+            Order nearlyOrder = orders.get(0);
+            String orderDetail = ""; // TODO: order detail formatter
+            msg = String.format(REPLY_TEMPLATE,
+                    collector.getName(),
+                    orders.size(),
+                    new SimpleDateFormat(DATE_FORMAT_TEMPLATE).format(nearlyOrder.getCreatedAt()),
+                    nearlyOrder.getLocDetail(),
+                    orderDetail,
+                    ""); // TODO: OAuth link to /collector/order/allotted
+        } while (false);
+
         return WxMpXmlOutMessage.TEXT()
                 .content(msg)
                 .fromUser(wxMessage.getToUser())
