@@ -18,6 +18,21 @@ public class WxConfig {
     @Value("${wx.aeskey}")
     private String wxAeskey;
 
+    @Value("${wx.mchid}")
+    private String wxMchId;
+
+    @Value("${wx.mchkey}")
+    private String wxMchKey;
+
+    @Value("${wx.subappid}")
+    private String wxSubAppId;
+
+    @Value("${wx.submchid}")
+    private String wxSubMchId;
+
+    @Value("${wx.keypath}")
+    private String wxKeyPath;
+
     public String getWxAppid() {
         return wxAppid;
     }
@@ -48,6 +63,46 @@ public class WxConfig {
 
     public void setWxAeskey(String wxAeskey) {
         this.wxAeskey = wxAeskey;
+    }
+
+    public String getWxMchId() {
+        return wxMchId;
+    }
+
+    public void setWxMchId(String wxMchId) {
+        this.wxMchId = wxMchId;
+    }
+
+    public String getWxMchKey() {
+        return wxMchKey;
+    }
+
+    public void setWxMchKey(String wxMchKey) {
+        this.wxMchKey = wxMchKey;
+    }
+
+    public String getWxSubAppId() {
+        return wxSubAppId;
+    }
+
+    public void setWxSubAppId(String wxSubAppId) {
+        this.wxSubAppId = wxSubAppId;
+    }
+
+    public String getWxSubMchId() {
+        return wxSubMchId;
+    }
+
+    public void setWxSubMchId(String wxSubMchId) {
+        this.wxSubMchId = wxSubMchId;
+    }
+
+    public String getWxKeyPath() {
+        return wxKeyPath;
+    }
+
+    public void setWxKeyPath(String wxKeyPath) {
+        this.wxKeyPath = wxKeyPath;
     }
 
 }
