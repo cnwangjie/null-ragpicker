@@ -30,16 +30,20 @@ import java.util.stream.Stream;
 @Service
 public class WechatService implements ApplicationListener<ApplicationReadyEvent> {
 
-    @Autowired
-    private WxConfig wxConfig;
+    private final WxConfig wxConfig;
 
-    @Autowired
-    private Config config;
+    private final Config config;
 
-    @Autowired
-    private CurrentOrderBtnClickEventHandler currentOrderBtnClickEventHandler;
+    private final CurrentOrderBtnClickEventHandler currentOrderBtnClickEventHandler;
 
     private static final String CURRENT_ORDER_EVENT_KEY = "current_order";
+
+    @Autowired
+    public WechatService(WxConfig wxConfig, Config config, CurrentOrderBtnClickEventHandler currentOrderBtnClickEventHandler) {
+        this.wxConfig = wxConfig;
+        this.config = config;
+        this.currentOrderBtnClickEventHandler = currentOrderBtnClickEventHandler;
+    }
 
     public boolean verifyWechatToken(Map<String, String> params) throws NoSuchAlgorithmException {
         String token = wxConfig.getWxToken();

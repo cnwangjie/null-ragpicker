@@ -13,11 +13,15 @@ import java.util.List;
 @Service
 public class AddressServiceImpl implements AddressService {
 
-    @Autowired
-    private AddressRepository addressRepository;
+    private final AddressRepository addressRepository;
+
+    private final UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    public AddressServiceImpl(AddressRepository addressRepository, UserRepository userRepository) {
+        this.addressRepository = addressRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public List<Address> findAllByUserId(Integer userId) {

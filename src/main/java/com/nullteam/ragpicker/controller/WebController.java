@@ -29,20 +29,28 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/web")
 public class WebController {
 
-    @Autowired
-    private WechatService wechatService;
+    private final WechatService wechatService;
+
+    private final JWTService jwtService;
+
+    private final WxUserService wxUserService;
+
+    private final UserService userService;
+
+    private final CollectorService collectorService;
 
     @Autowired
-    private JWTService jwtService;
-
-    @Autowired
-    private WxUserService wxUserService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private CollectorService collectorService;
+    public WebController(WechatService wechatService,
+                         JWTService jwtService,
+                         WxUserService wxUserService,
+                         UserService userService,
+                         CollectorService collectorService) {
+        this.wechatService = wechatService;
+        this.jwtService = jwtService;
+        this.wxUserService = wxUserService;
+        this.userService = userService;
+        this.collectorService = collectorService;
+    }
 
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.GET)

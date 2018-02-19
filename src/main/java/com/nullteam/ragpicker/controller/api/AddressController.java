@@ -14,8 +14,12 @@ import java.util.List;
 @RequestMapping("/api")
 public class AddressController {
 
+    private final AddressService addressService;
+
     @Autowired
-    private AddressService addressService;
+    public AddressController(AddressService addressService) {
+        this.addressService = addressService;
+    }
 
     // TODO: full test & debug log
 

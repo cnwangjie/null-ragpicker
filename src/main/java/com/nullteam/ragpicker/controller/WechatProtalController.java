@@ -27,8 +27,12 @@ public class WechatProtalController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private final WechatService wechatService;
+
     @Autowired
-    private WechatService wechatService;
+    public WechatProtalController(WechatService wechatService) {
+        this.wechatService = wechatService;
+    }
 
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.GET, params = {"signature", "echostr", "timestamp", "nonce"})

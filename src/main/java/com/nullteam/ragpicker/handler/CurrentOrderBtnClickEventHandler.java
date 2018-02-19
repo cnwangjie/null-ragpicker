@@ -20,17 +20,22 @@ import java.util.Map;
 @Component
 public class CurrentOrderBtnClickEventHandler implements WxMpMessageHandler {
 
-    @Autowired
-    private WxUserService wxUserService;
+    private final WxUserService wxUserService;
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
 
     private static final String NOT_COLLECTOR_REPLY = "您不是回收员";
     private static final String NO_ORDER_REPLY = "当前没有需要您回收的订单";
     private static final String REPLY_TEMPLATE = "尊敬的回收员%s：\n当前有 %d 件订单需要由您回收，最近一件的信息如下\n\n" +
             "------------\n下单时间 %s\n地址 %s\n物品清单 \n%s\n------------\n\n<a href=\"%s\">点击查看全部详情</a>";
     private static final String DATE_FORMAT_TEMPLATE = "MM月dd日 HH:mm (E)";
+
+    @Autowired
+    public CurrentOrderBtnClickEventHandler(WxUserService wxUserService,
+                                            OrderService orderService) {
+        this.wxUserService = wxUserService;
+        this.orderService = orderService;
+    }
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,

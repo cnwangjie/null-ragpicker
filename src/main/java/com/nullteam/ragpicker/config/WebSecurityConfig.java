@@ -3,7 +3,6 @@ package com.nullteam.ragpicker.config;
 import com.nullteam.ragpicker.middleware.JWTAuthenticationTokenFilter;
 import com.nullteam.ragpicker.security.JwtAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,12 +17,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    @Bean
-    public JWTAuthenticationTokenFilter authenticationTokenFilterBean() {
-        return new JWTAuthenticationTokenFilter();
+    private final JWTAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
+    @Autowired
+    public WebSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JWTAuthenticationTokenFilter jwtAuthenticationTokenFilter) {
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
     }
 
     @Override
@@ -35,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity
-                .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         httpSecurity.headers().cacheControl();
     }

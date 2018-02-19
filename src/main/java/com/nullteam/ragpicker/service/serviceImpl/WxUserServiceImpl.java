@@ -9,8 +9,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class WxUserServiceImpl implements WxUserService {
 
+    private final WxUserRepository wxUserRepository;
+
     @Autowired
-    private WxUserRepository wxUserRepository;
+    public WxUserServiceImpl(WxUserRepository wxUserRepository) {
+        this.wxUserRepository = wxUserRepository;
+    }
 
     @Override
     public WxUser getOneByWxId(String wxid) {

@@ -11,8 +11,12 @@ import java.util.List;
 @Service
 public class CateServiceImpl implements CateService {
 
+    private final CateRepository cateRepository;
+
     @Autowired
-    private CateRepository cateRepository;
+    public CateServiceImpl(CateRepository cateRepository) {
+        this.cateRepository = cateRepository;
+    }
 
     @Override
     public List<Cate> getAll() {

@@ -11,8 +11,12 @@ import java.util.List;
 @Service
 public class CollectorServiceImpl implements CollectorService {
 
+    private final CollectorRepository collectorRepository;
+
     @Autowired
-    private CollectorRepository collectorRepository;
+    public CollectorServiceImpl(CollectorRepository collectorRepository) {
+        this.collectorRepository = collectorRepository;
+    }
 
     @Override
     public Collector create(Collector collector) {

@@ -19,19 +19,23 @@ import java.util.List;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private AddressService addressService;
+    private final AddressService addressService;
 
-    @Autowired
-    private CollectorService collectorService;
+    private final CollectorService collectorService;
 
     private static final Long ALLOTT_FAILED_RETRY_WAIT_TIME = 300000L;
+
+    @Autowired
+    public OrderServiceImpl(OrderRepository orderRepository, UserService userService, AddressService addressService, CollectorService collectorService) {
+        this.orderRepository = orderRepository;
+        this.userService = userService;
+        this.addressService = addressService;
+        this.collectorService = collectorService;
+    }
 
     @Override
     public Order createNewOrder(Integer userId, Integer addressId, List<OrderDetail> orderDetails, String remark) {

@@ -20,14 +20,18 @@ import java.util.Map;
 @Service
 public class JWTServiceImpl implements JWTService {
 
-    @Autowired
-    private JWTConfig jwtConfig;
+    private final JWTConfig jwtConfig;
+
+    private final UserRepository userRepository;
+
+    private final CollectorRepository collectorRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private CollectorRepository collectorRepository;
+    public JWTServiceImpl(UserRepository userRepository, JWTConfig jwtConfig, CollectorRepository collectorRepository) {
+        this.userRepository = userRepository;
+        this.jwtConfig = jwtConfig;
+        this.collectorRepository = collectorRepository;
+    }
 
     private String genJWTToken(Map claims) {
         return Jwts.builder()

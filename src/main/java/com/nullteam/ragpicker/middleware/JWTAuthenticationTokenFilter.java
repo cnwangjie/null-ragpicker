@@ -21,11 +21,15 @@ import java.util.Set;
 @Component
 public class JWTAuthenticationTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JWTConfig jwtConfig;
+    private final JWTConfig jwtConfig;
+
+    private final JWTServiceImpl jwtService;
 
     @Autowired
-    private JWTServiceImpl jwtService;
+    public JWTAuthenticationTokenFilter(JWTConfig jwtConfig, JWTServiceImpl jwtService) {
+        this.jwtConfig = jwtConfig;
+        this.jwtService = jwtService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

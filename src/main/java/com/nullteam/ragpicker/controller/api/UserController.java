@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/user/{userId}/info")
     public ResponseEntity getUserInfo(@PathVariable Integer userId) {

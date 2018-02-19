@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class CateController {
 
+    private final CateService cateService;
+
     @Autowired
-    private CateService cateService;
+    public CateController(CateService cateService) {
+        this.cateService = cateService;
+    }
 
     @GetMapping("/cate")
     public ResponseEntity listAllCates() {

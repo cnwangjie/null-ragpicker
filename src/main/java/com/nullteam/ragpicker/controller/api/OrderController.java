@@ -20,20 +20,28 @@ import java.util.List;
 @RequestMapping("/api")
 public class OrderController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final CollectorService collectorService;
+
+    private final AddressService addressService;
+
+    private final OrderService orderService;
+
+    private final CateService cateService;
 
     @Autowired
-    private CollectorService collectorService;
-
-    @Autowired
-    private AddressService addressService;
-
-    @Autowired
-    private OrderService orderService;
-
-    @Autowired
-    private CateService cateService;
+    public OrderController(UserService userService,
+                           CollectorService collectorService,
+                           AddressService addressService,
+                           OrderService orderService,
+                           CateService cateService) {
+        this.userService = userService;
+        this.collectorService = collectorService;
+        this.addressService = addressService;
+        this.orderService = orderService;
+        this.cateService = cateService;
+    }
 
     /**
      * 获取用户个人订单
