@@ -4,13 +4,15 @@ import com.github.javafaker.Faker;
 import com.nullteam.ragpicker.config.JWTConfig;
 import com.nullteam.ragpicker.model.Address;
 import com.nullteam.ragpicker.model.User;
-import com.nullteam.ragpicker.service.serviceImpl.JWTServiceImpl;
+import com.nullteam.ragpicker.service.JWTService;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -23,10 +25,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Locale;
 
+import static java.lang.String.format;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -34,10 +36,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @FixMethodOrder(MethodSorters.JVM)
 public class AddressControllerTests {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private MockMvc mockMvc;
 
     @Autowired
-    private JWTServiceImpl jwtService;
+    private JWTService jwtService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -50,8 +54,17 @@ public class AddressControllerTests {
 
     private Faker faker = new Faker(new Locale("zh-CN"));
 
+    private static final String LIST_ADDRESSES_API_URL_TEMP = "/api/user/%d/address";
+    private static final String ADD_ADDRESS_API_URL_TEMP = "/api/user/%d/address";
+    private static final String GET_AN_ADDRESS_API_URL_TEMP = "/api/address/%d";
+    private static final String UPDATE_AN_ADDRESS_API_URL_TEMP = "/api/address/%d";
+    private static final String DELETE_AN_ADDRESS_API_URL_TEMP = "/api/address/%d/delete";
+    private static final int EXISTS_USER_ID = 1;
+    private static final int NOT_EXISTS_USER_ID = 100000;
+
     @Before
     public void setUp() {
+        logger.info("start to test address api controller");
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .apply(springSecurity())
@@ -59,57 +72,74 @@ public class AddressControllerTests {
     }
 
     @Test
-    public void testListAddresses() throws Exception {
-        User user = entityManager.find(User.class, 1);
-        String token = jwtService.genUserToken(user);
+    public void listAddressesOfNotExistsUser() throws Exception {
+        logger.info("list address of not exists user should return status 404");
+        mockMvc.perform(get(format(LIST_ADDRESSES_API_URL_TEMP, NOT_EXISTS_USER_ID)))
+                .andExpect(status().isNotFound());
+    }
 
-        mockMvc.perform(get("/api/user/1/address")
-                .header(jwtConfig.getJWTHeader(), token))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-
-
-        mockMvc.perform(get("/api/user/2/address")
-                .header(jwtConfig.getJWTHeader(), token))
-                .andDo(print())
-                .andExpect(status().isForbidden());
-
-        mockMvc.perform(get("/api/user/1/address"))
-                .andDo(print())
+    @Test
+    public void listAddressesWithoutAuthorization() throws Exception {
+        logger.info("list address without authorization should return status 401");
+        mockMvc.perform(get(format(LIST_ADDRESSES_API_URL_TEMP, EXISTS_USER_ID)))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void testUpdateAddress() throws Exception {
-        User user = entityManager.find(User.class, 1);
+    public void listAddressesSuccess() throws Exception {
+        User user = entityManager.find(User.class, EXISTS_USER_ID);
+        String token = jwtService.genUserToken(user);
+
+        logger.info("list address success should return JSON with status 200");
+        mockMvc.perform(get(format(LIST_ADDRESSES_API_URL_TEMP, EXISTS_USER_ID))
+                .header(jwtConfig.getJWTHeader(), token))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void listAddressOfOthers() throws Exception {
+        User user = entityManager.find(User.class, EXISTS_USER_ID);
+        String token = jwtService.genUserToken(user);
+
+        logger.info("list address of others should return status 403");
+        mockMvc.perform(get(format(LIST_ADDRESSES_API_URL_TEMP, EXISTS_USER_ID + 1))
+                .header(jwtConfig.getJWTHeader(), token))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void updateAddress() throws Exception {
+        User user = entityManager.find(User.class, EXISTS_USER_ID);
         String token = jwtService.genUserToken(user);
         Address address = user.getAddresses().get(0);
         String newDetail = faker.address().streetAddress();
-        mockMvc.perform(post(String.format("/api/address/%d", address.getId()))
+
+        logger.info("update address success should return JSON of new address with status 200");
+        mockMvc.perform(post(String.format(UPDATE_AN_ADDRESS_API_URL_TEMP, address.getId()))
                 .header(jwtConfig.getJWTHeader(), token)
                 .param("detail", newDetail)
                 .param("tel", address.getTel())
                 .param("location", address.getLocation().toString()))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("detail").value(newDetail));
     }
 
     @Test
-    public void testAddAddress() throws Exception {
+    public void addAddress() throws Exception {
         User user = entityManager.find(User.class, 1);
         String token = jwtService.genUserToken(user);
         Integer location = 100000;
         String detail = faker.address().streetAddress();
         String tel = faker.phoneNumber().cellPhone();
+
+        logger.info("add an address success should return JSON of new address with status 200");
         mockMvc.perform(post(String.format("/api/user/%d/address", user.getId()))
                 .header(jwtConfig.getJWTHeader(), token)
                 .param("location", location.toString())
                 .param("detail", detail)
                 .param("tel", tel))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("detail").value(detail))

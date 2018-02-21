@@ -1,7 +1,9 @@
 package com.nullteam.ragpicker.controller.api;
 
 import com.nullteam.ragpicker.model.Address;
+import com.nullteam.ragpicker.model.User;
 import com.nullteam.ragpicker.service.AddressService;
+import com.nullteam.ragpicker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,23 +18,30 @@ public class AddressController {
 
     private final AddressService addressService;
 
+    private final UserService userService;
+
     @Autowired
-    public AddressController(AddressService addressService) {
+    public AddressController(AddressService addressService, UserService userService) {
         this.addressService = addressService;
+        this.userService = userService;
     }
 
     // TODO: full test & debug log
 
     @GetMapping(value = "/user/{userId}/address")
     public ResponseEntity listUserAddress(@PathVariable Integer userId) {
-        List<Address> addresses = addressService.findAllByUserId(userId);
+        User user = userService.getOneById(userId);
+        if (user == null) return ResponseEntity.notFound().build();
+        List<Address> addresses = addressService.findAllByUser(user);
         return ResponseEntity.ok().body(addresses);
     }
 
     @PostMapping(value = "/user/{userId}/address")
     public ResponseEntity addAddress(@PathVariable Integer userId,
                                      @Valid Address address) {
-        address = addressService.addAddressForUserById(address, userId);
+        User user = userService.getOneById(userId);
+        if (user == null) return ResponseEntity.notFound().build();
+        address = addressService.addAddressForUser(address, user);
         return ResponseEntity.ok().body(address);
     }
 

@@ -1,6 +1,7 @@
 package com.nullteam.ragpicker.service.serviceImpl;
 
 import com.nullteam.ragpicker.model.Address;
+import com.nullteam.ragpicker.model.User;
 import com.nullteam.ragpicker.repository.AddressRepository;
 import com.nullteam.ragpicker.repository.UserRepository;
 import com.nullteam.ragpicker.service.AddressService;
@@ -24,13 +25,13 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public List<Address> findAllByUserId(Integer userId) {
-        return addressRepository.findAllByUserId(userId);
+    public List<Address> findAllByUser(User user) {
+        return addressRepository.findAllByUserId(user.getId());
     }
 
     @Override
-    public Address addAddressForUserById(Address address, Integer userId) {
-        address.setUser(userRepository.findOne(userId));
+    public Address addAddressForUser(Address address, User user) {
+        address.setUser(user);
         return addressRepository.save(address);
     }
 
