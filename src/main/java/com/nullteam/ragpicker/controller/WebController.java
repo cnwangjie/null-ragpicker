@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
 
 @Controller
 @RequestMapping("/web")
@@ -70,7 +71,8 @@ public class WebController {
                 wxUser.setNickname(wxMpUser.getNickname());
                 wxUser.setWxid(wxMpUser.getOpenId());
                 wxUser.setAvatar(wxMpUser.getHeadImgUrl());
-                wxUserService.Save(wxUser);
+                wxUser.setRefreshToken(wxMpOAuth2AccessToken.getRefreshToken());
+                wxUserService.update(wxUser);
             } catch (Exception e) {
                 String userInfoOAuthPath = wechatService.getWxMpService()
                         .oauth2buildAuthorizationUrl(req.getRequestURL() + "?identity=" + identity + "&hashpath=" + hashpath
@@ -103,9 +105,6 @@ public class WebController {
                 return ResponseEntity.notFound().build();
         }
         res.addCookie(new Cookie("jwt-token", jwtToken));
-        System.out.println(jwtToken);
-        return ResponseEntity.ok().body(wxUser);
-        // TODO: render front end page
-//        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("/web/#/" + identity + "/" + hashpath)).build();
+        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("/web/index.html#/" + identity + "/" + hashpath)).build();
     }
 }

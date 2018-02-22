@@ -23,9 +23,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 import java.util.Locale;
 
 import static java.lang.String.format;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -62,6 +65,18 @@ public class AddressControllerTests {
     private static final int EXISTS_USER_ID = 1;
     private static final int NOT_EXISTS_USER_ID = 100000;
 
+    private User getUser() {
+        return entityManager.find(User.class, EXISTS_USER_ID);
+    }
+
+    private String token;
+
+    private String getToken() {
+        if (this.token == null)
+            this.token = jwtService.genUserToken(getUser());
+        return this.token;
+    }
+
     @Before
     public void setUp() {
         logger.info("start to test address api controller");
@@ -87,37 +102,29 @@ public class AddressControllerTests {
 
     @Test
     public void listAddressesSuccess() throws Exception {
-        User user = entityManager.find(User.class, EXISTS_USER_ID);
-        String token = jwtService.genUserToken(user);
-
         logger.info("list address success should return JSON with status 200");
         mockMvc.perform(get(format(LIST_ADDRESSES_API_URL_TEMP, EXISTS_USER_ID))
-                .header(jwtConfig.getJWTHeader(), token))
+                .header(jwtConfig.getJWTHeader(), getToken()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
     @Test
     public void listAddressOfOthers() throws Exception {
-        User user = entityManager.find(User.class, EXISTS_USER_ID);
-        String token = jwtService.genUserToken(user);
-
         logger.info("list address of others should return status 403");
         mockMvc.perform(get(format(LIST_ADDRESSES_API_URL_TEMP, EXISTS_USER_ID + 1))
-                .header(jwtConfig.getJWTHeader(), token))
+                .header(jwtConfig.getJWTHeader(), getToken()))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     public void updateAddress() throws Exception {
-        User user = entityManager.find(User.class, EXISTS_USER_ID);
-        String token = jwtService.genUserToken(user);
-        Address address = user.getAddresses().get(0);
+        Address address = getUser().getAddresses().get(0);
         String newDetail = faker.address().streetAddress();
 
         logger.info("update address success should return JSON of new address with status 200");
-        mockMvc.perform(post(String.format(UPDATE_AN_ADDRESS_API_URL_TEMP, address.getId()))
-                .header(jwtConfig.getJWTHeader(), token)
+        mockMvc.perform(post(format(UPDATE_AN_ADDRESS_API_URL_TEMP, address.getId()))
+                .header(jwtConfig.getJWTHeader(), getToken())
                 .param("detail", newDetail)
                 .param("tel", address.getTel())
                 .param("location", address.getLocation().toString()))
@@ -128,15 +135,13 @@ public class AddressControllerTests {
 
     @Test
     public void addAddress() throws Exception {
-        User user = entityManager.find(User.class, 1);
-        String token = jwtService.genUserToken(user);
         Integer location = 100000;
         String detail = faker.address().streetAddress();
         String tel = faker.phoneNumber().cellPhone();
 
         logger.info("add an address success should return JSON of new address with status 200");
-        mockMvc.perform(post(String.format("/api/user/%d/address", user.getId()))
-                .header(jwtConfig.getJWTHeader(), token)
+        mockMvc.perform(post(format(ADD_ADDRESS_API_URL_TEMP, getUser().getId()))
+                .header(jwtConfig.getJWTHeader(), getToken())
                 .param("location", location.toString())
                 .param("detail", detail)
                 .param("tel", tel))
@@ -144,5 +149,29 @@ public class AddressControllerTests {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("detail").value(detail))
                 .andExpect(jsonPath("tel").value(tel));
+    }
+
+    @Test
+    public void getAnAddressDetail() throws Exception {
+        Address address = getUser().getAddresses().get(0);
+        mockMvc.perform(get(format(GET_AN_ADDRESS_API_URL_TEMP, address.getId()))
+                .header(jwtConfig.getJWTHeader(), getToken()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("detail").value(address.getDetail()))
+                .andExpect(jsonPath("tel").value(address.getTel()));
+    }
+
+    @Test
+    public void deleteAnAddress() throws Exception {
+        List<Address> addressList = getUser().getAddresses();
+        Address address = addressList.get(addressList.size() - 1);
+        mockMvc.perform(post(format(DELETE_AN_ADDRESS_API_URL_TEMP, address.getId()))
+                .header(jwtConfig.getJWTHeader(), getToken()))
+                .andExpect(status().isOk());
+
+        List<Address> newAddressList = getUser().getAddresses();
+        assertEquals(newAddressList.size(), addressList.size() - 1);
+        assertFalse(newAddressList.contains(address));
     }
 }

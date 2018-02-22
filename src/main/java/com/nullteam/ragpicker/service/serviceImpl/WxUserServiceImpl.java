@@ -22,7 +22,7 @@ public class WxUserServiceImpl implements WxUserService {
     }
 
     @Override
-    public WxUser Save(WxUser wxUser) {
+    public WxUser update(WxUser wxUser) {
         return wxUserRepository.save(wxUser);
     }
 }

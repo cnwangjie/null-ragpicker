@@ -6,6 +6,6 @@ public interface WxUserService {
 
     WxUser getOneByWxId(String wxid);
 
-    WxUser Save(WxUser wxUser);
+    WxUser update(WxUser wxUser);
 
 }

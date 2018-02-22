@@ -38,12 +38,16 @@ public class WxUser {
     private Date updatedAt;
 
     @JsonIgnore
-    @OneToOne
+    @OneToOne(mappedBy = "info", fetch = FetchType.LAZY)
     private User user;
 
     @JsonIgnore
-    @OneToOne
+    @OneToOne(mappedBy = "info", fetch = FetchType.LAZY)
     private Collector collector;
+
+    @JsonIgnore
+    @Column(columnDefinition = "varchar(255) COMMENT 'REFRESH_TOKEN'")
+    private String refreshToken;
 
     public Integer getId() {
         return id;
@@ -108,5 +112,14 @@ public class WxUser {
     public void setCollector(Collector collector) {
         this.collector = collector;
     }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
 
 }
