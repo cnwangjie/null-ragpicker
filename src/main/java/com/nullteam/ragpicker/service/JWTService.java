@@ -3,8 +3,6 @@ package com.nullteam.ragpicker.service;
 import com.nullteam.ragpicker.model.Collector;
 import com.nullteam.ragpicker.model.User;
 
-import java.util.Map;
-
 public interface JWTService {
 
     String genUserToken(User user);

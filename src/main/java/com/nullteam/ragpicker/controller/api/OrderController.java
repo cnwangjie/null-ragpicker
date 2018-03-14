@@ -121,7 +121,7 @@ public class OrderController {
     @PostMapping("/order/{orderNo}/complete")
     public ResponseEntity completeOrder(@PathVariable String orderNo,
                                         @RequestParam Integer amount,
-                                        @RequestParam String orderDetailsJsonStr) throws IOException {
+                                        @RequestParam(name = "order_details") String orderDetailsJsonStr) throws IOException {
         Order order = orderService.getOneByOrderNo(orderNo);
         if (order == null) return ResponseEntity.notFound().build();
         List<OrderDetail> orderDetails = new ArrayList<>();
