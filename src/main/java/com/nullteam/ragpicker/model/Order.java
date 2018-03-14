@@ -29,7 +29,7 @@ public class Order {
     private User user;
 
     @ManyToOne
-    @JoinColumn(columnDefinition = "int(11) UNSIGNED COMMENT '回收员id'", name = "collector_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(columnDefinition = "int(11) UNSIGNED COMMENT '回收员id'", name = "collector_id", referencedColumnName = "id")
     private Collector collector;
 
     @Column(columnDefinition = "int(6) UNSIGNED COMMENT '地点'", nullable = false)

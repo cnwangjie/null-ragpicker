@@ -72,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
         order = orderRepository.save(order);
         // TODO: perhaps should allow creating order if no collector in the location
         allotCollectorForOrder(order);
-        return orderRepository.save(order);
+        return order;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
     public Order completeOrder(Order order, Integer amount, List<OrderDetail> orderDetails) {
         order.setAmount(amount);
         order.setOrderDetail(orderDetails);
-        order.setStatus(Order.Status.ALLOTTED);
+        order.setStatus(Order.Status.COMPLETED);
         order = orderRepository.save(order);
         payOrder(order);
         return order;
@@ -178,12 +178,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrdersByUser(User user) {
-        return orderRepository.findByUser(user.getId());
+        return orderRepository.findByUserId(user.getId());
     }
 
     @Override
     public List<Order> getAllOrdersByCollector(Collector collector) {
-        return orderRepository.findByCollector(collector.getId());
+        return orderRepository.findByCollectorId(collector.getId());
     }
 
     @Override

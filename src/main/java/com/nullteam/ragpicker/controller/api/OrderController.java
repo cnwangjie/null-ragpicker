@@ -91,12 +91,12 @@ public class OrderController {
      * 修改订单
      *
      */
-    @PostMapping("/user/{userId}")
-    public ResponseEntity updateOrder(@PathVariable Integer userId,
-                                      @ModelAttribute Order order) {
-        // TODO: 更新订单业务逻辑
-        return ResponseEntity.notFound().build();
-    }
+//    @PostMapping("/user/{userId}")
+//    public ResponseEntity updateOrder(@PathVariable Integer userId,
+//                                      @ModelAttribute Order order) {
+//        // TODO: 更新订单业务逻辑
+//        return ResponseEntity.notFound().build();
+//    }
 
     @PostMapping("/order/{orderNo}/cancel")
     public ResponseEntity deleteOrder(@PathVariable String orderNo) {
@@ -136,8 +136,8 @@ public class OrderController {
             orderDetail.setSum(sum);
             orderDetails.add(orderDetail);
         }
+        if (Order.Status.ALLOTTED != order.getStatus()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         order = orderService.completeOrder(order, amount, orderDetails);
-        if (Order.Status.COMPLETED != order.getStatus()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         return ResponseEntity.ok(order);
     }
 
