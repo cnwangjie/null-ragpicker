@@ -173,6 +173,7 @@ public class OrderControllerTests {
         Order order = getLastestOrder();
         order.setCollector(null);
         order.setStatus(Order.Status.INIT);
+        order.setUser(getUser());
         entityManager.persist(order);
         entityManager.flush();
         mockMvc.perform(post(format(DELETE_ORDER_URL_TEMP, getLastestOrder().getOrderNo()))
