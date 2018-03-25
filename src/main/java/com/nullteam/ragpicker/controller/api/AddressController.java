@@ -12,6 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * <p>Title: AddressController.java</p>
+ * <p>Package: com.nullteam.ragpicker.controller.api</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 02/03/18
+ * @author Robin <robinchow8991@gmail.com>
+ * @author WangJie <i@i8e.net>
+ */
 @RestController
 @RequestMapping("/api")
 public class AddressController {

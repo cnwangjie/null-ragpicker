@@ -21,6 +21,16 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
+/**
+ * <p>Title: WechatProtalController.java</p>
+ * <p>Package: com.nullteam.ragpicker.controller</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 01/27/18
+ * @author WangJie <i@i8e.net>
+ * @author Robin <robinchow8991@gmail.com>
+ */
 @Controller
 @RequestMapping("/wechat/protal")
 public class WechatProtalController {

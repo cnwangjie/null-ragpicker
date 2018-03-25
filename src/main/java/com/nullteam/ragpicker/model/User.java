@@ -10,6 +10,15 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * <p>Title: User.java</p>
+ * <p>Package: com.nullteam.ragpicker.model</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 01/19/18
+ * @author WangJie <i@i8e.net>
+ */
 @Transactional
 @Entity
 @EntityListeners(AuditingEntityListener.class)

@@ -9,6 +9,15 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * <p>Title: Order.java</p>
+ * <p>Package: com.nullteam.ragpicker.model</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 01/19/18
+ * @author WangJie <i@i8e.net>
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "`order`")

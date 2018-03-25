@@ -7,6 +7,16 @@ import com.nullteam.ragpicker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * <p>Title: UserServiceImpl.java</p>
+ * <p>Package: package com.nullteam.ragpicker.service.serviceImpl;</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 02/13/18
+ * @author Robin <robinchow8991@gmail.com>
+ * @author WangJie <i@i8e.net>
+ */
 @Service
 public class UserServiceImpl implements UserService {
 

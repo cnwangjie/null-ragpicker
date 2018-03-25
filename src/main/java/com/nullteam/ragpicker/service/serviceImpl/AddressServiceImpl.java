@@ -11,6 +11,16 @@ import org.springframework.validation.BeanPropertyBindingResult;
 
 import java.util.List;
 
+/**
+ * <p>Title: AddressServiceImpl.java</p>
+ * <p>Package: package com.nullteam.ragpicker.service.serviceImpl;</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 02/13/18
+ * @author Robin <robinchow8991@gmail.com>
+ * @author WangJie <i@i8e.net>
+ */
 @Service
 public class AddressServiceImpl implements AddressService {
 

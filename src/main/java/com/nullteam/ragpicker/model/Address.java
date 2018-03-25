@@ -12,6 +12,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
+/**
+ * <p>Title: Address.java</p>
+ * <p>Package: com.nullteam.ragpicker.model</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 01/19/18
+ * @author WangJie <i@i8e.net>
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(indexes = {

@@ -6,6 +6,15 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * <p>Title: Authority.java</p>
+ * <p>Package: com.nullteam.ragpicker.model</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 01/19/18
+ * @author WangJie <i@i8e.net>
+ */
 //@Entity
 public class Authority {
 
