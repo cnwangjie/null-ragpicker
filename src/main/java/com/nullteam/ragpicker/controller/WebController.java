@@ -26,6 +26,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 
+/**
+ * <p>Title: WebController.java</p>
+ * <p>Package: com.nullteam.ragpicker.controller</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 01/30/18
+ * @author WangJie <i@i8e.net>
+ * @author Robin <robinchow8991@gmail.com>
+ */
 @Controller
 @RequestMapping("/web")
 public class WebController {

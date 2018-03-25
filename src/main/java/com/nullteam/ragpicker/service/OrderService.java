@@ -11,6 +11,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * <p>Title: OrderService.java</p>
+ * <p>Package: com.nullteam.ragpicker.service</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 02/13/18
+ * @author Robin <robinchow8991@gmail.com>
+ * @author WangJie <i@i8e.net>
+ */
 public interface OrderService {
 
     @PreAuthorize("hasRole('ROLE_USER') and #userId == principal.id")

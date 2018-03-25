@@ -21,6 +21,15 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * <p>Title: CateControllerTests.java</p>
+ * <p>Package: com.nullteam.ragpicker.api</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 02/23/18
+ * @author WangJie <i@i8e.net>
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @FixMethodOrder(MethodSorters.JVM)

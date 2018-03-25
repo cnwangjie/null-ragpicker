@@ -34,6 +34,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * <p>Title: AddressControllerTests.java</p>
+ * <p>Package: com.nullteam.ragpicker.api</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 02/03/18
+ * @author Robin <robinchow8991@gmail.com>
+ * @author WangJie <i@i8e.net>
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @FixMethodOrder(MethodSorters.JVM)

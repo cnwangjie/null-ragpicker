@@ -20,6 +20,16 @@ import javax.persistence.PersistenceContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * <p>Title: JWTServiceTests.java</p>
+ * <p>Package: com.nullteam.ragpicker</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 02/01/18
+ * @author WangJie <i@i8e.net>
+ * @author Robin <robinchow8991@gmail.com>
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class JWTServiceTests {

@@ -17,6 +17,15 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * <p>Title: CurrentOrderBtnClickEventHandler.java</p>
+ * <p>Package: com.nullteam.ragpicker.handler</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 02/15/18
+ * @author WangJie <i@i8e.net>
+ */
 @Component
 public class CurrentOrderBtnClickEventHandler implements WxMpMessageHandler {
 

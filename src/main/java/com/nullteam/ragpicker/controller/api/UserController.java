@@ -14,6 +14,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * <p>Title: UserController.java</p>
+ * <p>Package: com.nullteam.ragpicker.controller.api</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 02/13/18
+ * @author Robin <robinchow8991@gmail.com>
+ * @author WangJie <i@i8e.net>
+ */
 @RestController
 @RequestMapping("/api")
 public class UserController {

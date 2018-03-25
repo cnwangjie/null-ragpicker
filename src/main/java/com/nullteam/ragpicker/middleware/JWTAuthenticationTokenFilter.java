@@ -18,6 +18,16 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * <p>Title: JWTAuthenticationTokenFilter.java</p>
+ * <p>Package: com.nullteam.ragpicker.middleware</p>
+ * <p>Description: </p>
+ * <p>Copyright: 2018 the original author or authors.</p>
+
+ * @date 02/03/18
+ * @author Robin <robinchow8991@gmail.com>
+ * @author WangJie <i@i8e.net>
+ */
 @Component
 public class JWTAuthenticationTokenFilter extends OncePerRequestFilter {
 
