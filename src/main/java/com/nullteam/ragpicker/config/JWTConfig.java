@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JWTConfig {
 
-    @Value("${jwt.header}")
+    @Value("#{\"${jwt.header}\".trim()}")
     private String JWTHeader;
 
     @Value("${jwt.secret}")
