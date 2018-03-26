@@ -74,9 +74,7 @@ public class WebController {
                 wxUser.setRefreshToken(wxMpOAuth2AccessToken.getRefreshToken());
                 wxUserService.update(wxUser);
             } catch (Exception e) {
-                String userInfoOAuthPath = wechatService.getWxMpService()
-                        .oauth2buildAuthorizationUrl(req.getRequestURL() + "?identity=" + identity + "&hashpath=" + hashpath
-                                , WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
+                String userInfoOAuthPath = wechatService.buildOauthUrl(identity, hashpath, WxConsts.OAuth2Scope.SNSAPI_USERINFO);
                 return ResponseEntity.status(HttpStatus.FOUND).header("Location", userInfoOAuthPath).build();
             }
         }
@@ -105,6 +103,8 @@ public class WebController {
                 return ResponseEntity.notFound().build();
         }
         res.addCookie(new Cookie("jwt-token", jwtToken));
-        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("/web/index.html#/" + identity + "/" + hashpath)).build();
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create("/web/index.html#/" + identity + (hashpath.charAt(0) == '/' ? "" : "/") + hashpath))
+                .build();
     }
 }

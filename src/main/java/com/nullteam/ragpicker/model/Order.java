@@ -166,4 +166,12 @@ public class Order {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public String formatOrderDetail() {
+        StringBuilder formatter = new StringBuilder();
+        for (OrderDetail item : orderDetail) {
+            formatter.append(String.format("%s: %d %s\n", item.getCate().getName(), item.getSum(), item.getCate().getUnit()));
+        }
+        return formatter.toString();
+    }
 }

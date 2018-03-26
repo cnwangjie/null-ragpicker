@@ -4,6 +4,7 @@ import com.nullteam.ragpicker.model.Collector;
 import com.nullteam.ragpicker.model.Order;
 import com.nullteam.ragpicker.service.OrderService;
 import com.nullteam.ragpicker.service.WxUserService;
+import com.nullteam.ragpicker.service.serviceImpl.WechatService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpMessageHandler;
@@ -24,6 +25,8 @@ public class CurrentOrderBtnClickEventHandler implements WxMpMessageHandler {
 
     private final OrderService orderService;
 
+    private final WechatService wechatService;
+
     private static final String NOT_COLLECTOR_REPLY = "您不是回收员";
     private static final String NO_ORDER_REPLY = "当前没有需要您回收的订单";
     private static final String REPLY_TEMPLATE = "尊敬的回收员%s：\n当前有 %d 件订单需要由您回收，最近一件的信息如下\n\n" +
@@ -32,9 +35,10 @@ public class CurrentOrderBtnClickEventHandler implements WxMpMessageHandler {
 
     @Autowired
     public CurrentOrderBtnClickEventHandler(WxUserService wxUserService,
-                                            OrderService orderService) {
+                                            OrderService orderService, WechatService wechatService) {
         this.wxUserService = wxUserService;
         this.orderService = orderService;
+        this.wechatService = wechatService;
     }
 
     @Override
@@ -56,14 +60,14 @@ public class CurrentOrderBtnClickEventHandler implements WxMpMessageHandler {
                 break;
             }
             Order nearlyOrder = orders.get(0);
-            String orderDetail = ""; // TODO: order detail formatter
+            String orderDetail = nearlyOrder.formatOrderDetail();
             msg = String.format(REPLY_TEMPLATE,
                     collector.getName(),
                     orders.size(),
                     new SimpleDateFormat(DATE_FORMAT_TEMPLATE).format(nearlyOrder.getCreatedAt()),
                     nearlyOrder.getLocDetail(),
                     orderDetail,
-                    ""); // TODO: OAuth link to /collector/order/allotted
+                    wechatService.buildOauthUrl("collector", "/collector/order/allotted"));
         } while (false);
 
         return WxMpXmlOutMessage.TEXT()

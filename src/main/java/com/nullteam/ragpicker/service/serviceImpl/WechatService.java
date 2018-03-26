@@ -1,8 +1,5 @@
 package com.nullteam.ragpicker.service.serviceImpl;
 
-import com.github.binarywang.wxpay.config.WxPayConfig;
-import com.github.binarywang.wxpay.service.WxPayService;
-import com.github.binarywang.wxpay.service.impl.WxPayServiceImpl;
 import com.nullteam.ragpicker.config.Config;
 import com.nullteam.ragpicker.config.WxConfig;
 import com.nullteam.ragpicker.handler.CurrentOrderBtnClickEventHandler;
@@ -23,6 +20,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -37,14 +35,17 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
 
     private final Config config;
 
-    private final CurrentOrderBtnClickEventHandler currentOrderBtnClickEventHandler;
+    private CurrentOrderBtnClickEventHandler currentOrderBtnClickEventHandler;
 
     private static final String CURRENT_ORDER_EVENT_KEY = "current_order";
 
     @Autowired
-    public WechatService(WxConfig wxConfig, Config config, CurrentOrderBtnClickEventHandler currentOrderBtnClickEventHandler) {
+    public WechatService(WxConfig wxConfig, Config config) {
         this.wxConfig = wxConfig;
         this.config = config;
+    }
+
+    public void setCurrentOrderBtnClickEventHandler(CurrentOrderBtnClickEventHandler currentOrderBtnClickEventHandler) {
         this.currentOrderBtnClickEventHandler = currentOrderBtnClickEventHandler;
     }
 
@@ -79,6 +80,26 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
         return wxMpService;
     }
 
+    private static String join(String path0, String path1) {
+        return new File(path0, path1).toString();
+    }
+
+    public String buildOauthUrl(String identity, String hashpath, String scope, String state) {
+        return this.getWxMpService().oauth2buildAuthorizationUrl(join(config.getUrl(), "/web?" + (null != identity ? ("identity=" + identity + "&") : "") + "hashpath=" + hashpath), scope, state);
+    }
+
+    public String buildOauthUrl(String identity, String hashpath, String scope) {
+        return buildOauthUrl(identity, hashpath, scope, null);
+    }
+
+    public String buildOauthUrl(String identity, String hashpath) {
+        return buildOauthUrl(identity, hashpath, WxConsts.OAuth2Scope.SNSAPI_BASE, null);
+    }
+
+    public String buildOauthUrl(String identity) {
+        return buildOauthUrl(identity, null, WxConsts.OAuth2Scope.SNSAPI_BASE, null);
+    }
+
     public void createWxMenu() throws WxErrorException {
         WxMpService wxMpService = this.getWxMpService();
 
@@ -89,12 +110,12 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
         WxMenuButton btn00 = new WxMenuButton();
         btn00.setName("快速下单");
         btn00.setType(WxConsts.MenuButtonType.VIEW);
-        btn00.setUrl(wxMpService.oauth2buildAuthorizationUrl(config.getUrl() + "/web?identity=user&hashpath=/order/create", WxConsts.OAuth2Scope.SNSAPI_BASE, null));
+        btn00.setUrl(buildOauthUrl("user", "/order/create"));
         btn0.getSubButtons().add(btn00);
         WxMenuButton btn01 = new WxMenuButton();
         btn01.setName("个人中心");
         btn01.setType(WxConsts.MenuButtonType.VIEW);
-        btn01.setUrl(wxMpService.oauth2buildAuthorizationUrl(config.getUrl() + "/web?identity=user", WxConsts.OAuth2Scope.SNSAPI_BASE, null));
+        btn01.setUrl(buildOauthUrl("user"));
         btn0.getSubButtons().add(btn01);
         wxMenu.getButtons().add(btn0);
 
@@ -108,7 +129,7 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
         WxMenuButton btn11 = new WxMenuButton();
         btn11.setName("全部订单");
         btn11.setType(WxConsts.MenuButtonType.VIEW);
-        btn11.setUrl(wxMpService.oauth2buildAuthorizationUrl(config.getUrl() + "/web?identity=collector&hashpath=/order", WxConsts.OAuth2Scope.SNSAPI_BASE, null));
+        btn11.setUrl(buildOauthUrl("collector", "/order"));
         btn1.getSubButtons().add(btn11);
         wxMenu.getButtons().add(btn1);
         LoggerFactory.getLogger(this.getClass()).info(wxMenu.toJson());
