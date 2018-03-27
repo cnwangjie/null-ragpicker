@@ -3,6 +3,7 @@ package com.nullteam.ragpicker.service.serviceImpl;
 import com.nullteam.ragpicker.config.Config;
 import com.nullteam.ragpicker.config.WxConfig;
 import com.nullteam.ragpicker.handler.CurrentOrderBtnClickEventHandler;
+import com.nullteam.ragpicker.handler.SubscribeEventHandler;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.bean.menu.WxMenuButton;
@@ -37,6 +38,8 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
 
     private CurrentOrderBtnClickEventHandler currentOrderBtnClickEventHandler;
 
+    private SubscribeEventHandler subscribeEventHandler;
+
     private static final String CURRENT_ORDER_EVENT_KEY = "current_order";
 
     @Autowired
@@ -47,6 +50,10 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
 
     public void setCurrentOrderBtnClickEventHandler(CurrentOrderBtnClickEventHandler currentOrderBtnClickEventHandler) {
         this.currentOrderBtnClickEventHandler = currentOrderBtnClickEventHandler;
+    }
+
+    public void setSubscribeEventHandler(SubscribeEventHandler subscribeEventHandler) {
+        this.subscribeEventHandler = subscribeEventHandler;
     }
 
     public boolean verifyWechatToken(Map<String, String> params) throws NoSuchAlgorithmException {
@@ -142,6 +149,12 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
     @Bean
     public WxMpMessageRouter getWxMpMessageRouter() {
         return new WxMpMessageRouter(this.getWxMpService())
+                .rule()
+                .async(false)
+                .msgType(WxConsts.XmlMsgType.EVENT)
+                .event(WxConsts.EventType.SUBSCRIBE)
+                .handler(subscribeEventHandler)
+                .end()
                 .rule()
                 .async(false)
                 .msgType(WxConsts.XmlMsgType.EVENT)

@@ -67,7 +67,12 @@ public class WechatProtalController {
             res.getWriter().write(outMessage.toEncryptedXml(wechatService.getWxMpConfigStorage()));
         } else {
             WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(req.getInputStream());
+            logger.info(inMessage.toString());
             WxMpXmlOutMessage outMessage = wechatService.getWxMpMessageRouter().route(inMessage);
+            if (outMessage == null) return;
+            logger.info("===============================================");
+            logger.info(outMessage.toXml());
+            logger.info("===============================================");
             res.getWriter().write(outMessage.toXml());
         }
     }
