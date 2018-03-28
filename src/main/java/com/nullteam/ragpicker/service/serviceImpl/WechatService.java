@@ -48,10 +48,12 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
         this.config = config;
     }
 
+    @Autowired
     public void setCurrentOrderBtnClickEventHandler(CurrentOrderBtnClickEventHandler currentOrderBtnClickEventHandler) {
         this.currentOrderBtnClickEventHandler = currentOrderBtnClickEventHandler;
     }
 
+    @Autowired
     public void setSubscribeEventHandler(SubscribeEventHandler subscribeEventHandler) {
         this.subscribeEventHandler = subscribeEventHandler;
     }

@@ -64,16 +64,13 @@ public class WechatProtalController {
                     req.getInputStream(), wechatService.getWxMpConfigStorage(), timestamp, nonce,
                     msgSignature);
             WxMpXmlOutMessage outMessage = wechatService.getWxMpMessageRouter().route(inMessage);
-            res.getWriter().write(outMessage.toEncryptedXml(wechatService.getWxMpConfigStorage()));
+            if (outMessage != null)
+                res.getWriter().write(outMessage.toEncryptedXml(wechatService.getWxMpConfigStorage()));
         } else {
             WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(req.getInputStream());
-            logger.info(inMessage.toString());
             WxMpXmlOutMessage outMessage = wechatService.getWxMpMessageRouter().route(inMessage);
-            if (outMessage == null) return;
-            logger.info("===============================================");
-            logger.info(outMessage.toXml());
-            logger.info("===============================================");
-            res.getWriter().write(outMessage.toXml());
+            if (outMessage != null)
+                res.getWriter().write(outMessage.toXml());
         }
     }
 }
