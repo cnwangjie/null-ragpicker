@@ -34,8 +34,10 @@ public interface OrderService {
     @PreAuthorize("hasRole('ROLE_USER') and #user.id == principal.id")
     List<Order> getOrdersByUser(User user);
 
+    @PreAuthorize("hasRole('ROLE_COLLECTOR') and #collector.id == principal.id")
     List<Order> getAllOrdersByCollector(Collector collector);
 
+    @PreAuthorize("hasRole('ROLE_COLLECTOR') and #collector.id == principal.id")
     List<Order> getAllottedOrdersByCollector(Collector collector);
 
     List<Order> getCompletedOrderByUpdatedTime(Date start, Date end);

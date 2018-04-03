@@ -12,11 +12,16 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 public class CurrentOrderBtnClickEventHandler implements WxMpMessageHandler {
@@ -54,6 +59,12 @@ public class CurrentOrderBtnClickEventHandler implements WxMpMessageHandler {
                 msg = NOT_COLLECTOR_REPLY;
                 break;
             }
+
+            Set authorities = new HashSet();
+            authorities.add(new SimpleGrantedAuthority("ROLE_COLLECTOR"));
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(collector, null, authorities);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
             List<Order> orders = orderService.getAllottedOrdersByCollector(collector);
             if (orders.size() == 0) {
                 msg = NO_ORDER_REPLY;

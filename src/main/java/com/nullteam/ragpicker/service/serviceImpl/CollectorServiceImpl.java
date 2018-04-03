@@ -30,6 +30,6 @@ public class CollectorServiceImpl implements CollectorService {
 
     @Override
     public Collector getOneById(Integer collectorId) {
-        return collectorRepository.getOne(collectorId);
+        return collectorRepository.findOne(collectorId);
     }
 }
