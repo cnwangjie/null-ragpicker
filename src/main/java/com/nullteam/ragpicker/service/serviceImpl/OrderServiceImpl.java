@@ -80,13 +80,13 @@ public class OrderServiceImpl implements OrderService {
         // TODO: allot collecotr & set order status
         if (order.getStatus() != Order.Status.INIT || order.getCollector() != null) return;
         List<Collector> sameLocationCollectors = collectorService.getAllByLocationIdEquals(order.getLocation());
-        if (sameLocationCollectors.size() < 0) {
-            try {
-                Thread.sleep(ALLOTT_FAILED_RETRY_WAIT_TIME);
-                allotCollectorForOrder(order);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        if (sameLocationCollectors.size() < 1) {
+//            try {
+//                Thread.sleep(ALLOTT_FAILED_RETRY_WAIT_TIME);
+//                allotCollectorForOrder(order);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             return;
         }
         sameLocationCollectors.sort(Comparator.comparingInt(collector -> getAllottedOrdersByCollector(collector).size()));
