@@ -32,6 +32,9 @@ public class Order {
     @JoinColumn(columnDefinition = "int(11) UNSIGNED COMMENT '回收员id'", name = "collector_id", referencedColumnName = "id")
     private Collector collector;
 
+    @Column(columnDefinition = "varchar(13) COMMENT '电话'", nullable = false)
+    private String tel;
+
     @Column(columnDefinition = "int(6) UNSIGNED COMMENT '地点'", nullable = false)
     private Integer location;
 
@@ -93,6 +96,14 @@ public class Order {
 
     public void setCollector(Collector collector) {
         this.collector = collector;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 
     public Integer getLocation() {

@@ -27,6 +27,9 @@ public class OrderDetail {
     @Column(columnDefinition = "int(11) UNSIGNED COMMENT '数量'", nullable = false)
     private Integer sum;
 
+    @Column(columnDefinition = "int(11) UNSIGNED COMMENT '单价'")
+    private Integer price;
+
     public Order getOrder() {
         return order;
     }
@@ -51,10 +54,20 @@ public class OrderDetail {
         this.sum = sum;
     }
 
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
     public String toString() {
         return new StringBuilder().append("cate name: ").append(this.getCate().getName())
                 .append("\ncate id: ").append(this.getCate().getId())
                 .append("\ncate unit: ").append(this.getCate().getUnit())
-                .append("\nsum: ").append(this.getSum()).toString();
+                .append("\nsum: ").append(this.getSum())
+                .append("\nprice: ").append(this.getPrice())
+                .toString();
     }
 }

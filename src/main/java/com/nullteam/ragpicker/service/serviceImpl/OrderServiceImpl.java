@@ -63,6 +63,7 @@ public class OrderServiceImpl implements OrderService {
         order.setRemark(remark);
         order.setUser(user);
         order.setStatus(Order.Status.INIT);
+        order.setTel(address.getTel());
         order.setLocation(address.getLocation());
         order.setLocDetail(address.getDetail());
         order.setOrderDetail(orderDetails);

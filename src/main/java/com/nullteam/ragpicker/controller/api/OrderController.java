@@ -120,21 +120,29 @@ public class OrderController {
 
     @PostMapping("/order/{orderNo}/complete")
     public ResponseEntity completeOrder(@PathVariable String orderNo,
-                                        @RequestParam Integer amount,
                                         @RequestParam(name = "order_details") String orderDetailsJsonStr) throws IOException {
         Order order = orderService.getOneByOrderNo(orderNo);
         if (order == null) return ResponseEntity.notFound().build();
         List<OrderDetail> orderDetails = new ArrayList<>();
-        List<HashMap<String, Integer>> list = new ObjectMapper().readValue(orderDetailsJsonStr, List.class);
-        for (HashMap<String, Integer> item : list) {
-            OrderDetail orderDetail = new OrderDetail();
-            Cate cate = cateService.getOneById(item.get("cate_id"));
-            if (cate == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            Integer sum = item.get("sum");
-            if (sum < 1 || sum > 1000) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            orderDetail.setCate(cate);
-            orderDetail.setSum(sum);
-            orderDetails.add(orderDetail);
+        Integer amount = 0;
+        try {
+            List<HashMap<String, Integer>> list = new ObjectMapper().readValue(orderDetailsJsonStr, List.class);
+            for (HashMap<String, Integer> item : list) {
+                OrderDetail orderDetail = new OrderDetail();
+                Cate cate = cateService.getOneById(item.get("cate_id"));
+                if (cate == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                Integer sum = item.get("sum");
+                if (sum < 1 || sum > 1000) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                Integer price = item.get("price");
+                if (price < 1) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                orderDetail.setCate(cate);
+                orderDetail.setSum(sum);
+                orderDetail.setPrice(price);
+                orderDetails.add(orderDetail);
+                amount += sum * price;
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         if (Order.Status.ALLOTTED != order.getStatus()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         order = orderService.completeOrder(order, amount, orderDetails);

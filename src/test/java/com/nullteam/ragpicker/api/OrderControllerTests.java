@@ -188,6 +188,7 @@ public class OrderControllerTests {
     public void completeOrder() throws Exception {
         Order order = new Order();
         order.setUser(getUser());
+        order.setTel("12345678900");
         order.setLocation(100000);
         order.setLocDetail(faker.address().streetAddress());
         order.setRemark("");
@@ -196,7 +197,7 @@ public class OrderControllerTests {
         order.setCollector(getCollector());
         entityManager.persist(order);
         entityManager.flush();
-        int amount = faker.number().numberBetween(10, 1000);
+        int amount = 0;
         List<Cate> cates = getAllCates();
         List<HashMap<String, Integer>> orderDetails = new ArrayList<>();
         int ORDER_DETAILS_SIZE = 3;
@@ -204,12 +205,13 @@ public class OrderControllerTests {
             HashMap<String, Integer> orderDetail = new HashMap<>();
             orderDetail.put("cate_id", cates.get(faker.number().numberBetween(1, cates.size()) - 1).getId());
             orderDetail.put("sum", faker.number().numberBetween(1, 100));
+            orderDetail.put("price", faker.number().numberBetween(1, 10000));
             orderDetails.add(orderDetail);
+            amount += orderDetail.get("sum") * orderDetail.get("price");
         }
         String orderDetailsJsonStr = new ObjectMapper().writeValueAsString(orderDetails);
         mockMvc.perform(post(format(COMPLETE_ORDER_URL_TEMP, order.getOrderNo()))
                 .header(jwtConfig.getJWTHeader(), getCollectorToken())
-                .param("amount", String.valueOf(amount))
                 .param("order_details", orderDetailsJsonStr))
                 .andDo(print())
                 .andExpect(status().isOk())

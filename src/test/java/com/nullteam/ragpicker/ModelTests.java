@@ -100,6 +100,7 @@ public class ModelTests {
             Order order = new Order();
             order.setUser(entityManager.find(User.class, faker.number().numberBetween(1, 30)));
             order.setCollector(entityManager.find(Collector.class, faker.number().numberBetween(1, 30)));
+            order.setTel(faker.phoneNumber().cellPhone());
             order.setLocation(locationSeed[i / 4]);
             order.setLocDetail(faker.address().fullAddress());
             order.setRemark(RandomStringUtils.randomAscii(faker.number().numberBetween(0, 200)));
