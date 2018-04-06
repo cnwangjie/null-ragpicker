@@ -108,12 +108,20 @@ public class ModelTests {
             order.setStatus(statusSeed[faker.number().numberBetween(0, 6)]);
             entityManager.persist(order);
             entityManager.flush();
+            Integer amount = 0;
             for (int j = 0; j < faker.number().numberBetween(1, 10); j += 1) {
                 OrderDetail orderDetail = new OrderDetail();
                 orderDetail.setCate(entityManager.find(Cate.class, faker.number().numberBetween(1, 10)));
                 orderDetail.setSum(faker.number().numberBetween(1, 20));
+                orderDetail.setPrice(faker.number().numberBetween(1, 10000));
                 orderDetail.setOrder(order);
                 entityManager.persist(orderDetail);
+                entityManager.flush();
+                amount += orderDetail.getPrice() * orderDetail.getSum();
+            }
+            if (order.getStatus() == Order.Status.COMPLETED) {
+                order.setAmount(amount);
+                entityManager.persist(order);
                 entityManager.flush();
             }
         }
