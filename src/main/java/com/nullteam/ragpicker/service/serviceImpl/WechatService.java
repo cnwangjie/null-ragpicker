@@ -94,7 +94,7 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
     }
 
     public String buildOauthUrl(String identity, String hashpath, String scope, String state) {
-        return this.getWxMpService().oauth2buildAuthorizationUrl(join(config.getUrl(), "/web?" + (null != identity ? ("identity=" + identity + "&") : "") + "hashpath=" + hashpath), scope, state);
+        return this.getWxMpService().oauth2buildAuthorizationUrl(config.getUrl() + "/web?" + (null != identity ? ("identity=" + identity + "&") : "") + "hashpath=" + hashpath, scope, state);
     }
 
     public String buildOauthUrl(String identity, String hashpath, String scope) {
@@ -124,7 +124,7 @@ public class WechatService implements ApplicationListener<ApplicationReadyEvent>
         WxMenuButton btn01 = new WxMenuButton();
         btn01.setName("个人中心");
         btn01.setType(WxConsts.MenuButtonType.VIEW);
-        btn01.setUrl(buildOauthUrl("user"));
+        btn01.setUrl(buildOauthUrl("user", "/home"));
         btn0.getSubButtons().add(btn01);
         wxMenu.getButtons().add(btn0);
 

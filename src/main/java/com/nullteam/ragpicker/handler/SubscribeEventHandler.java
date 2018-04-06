@@ -1,5 +1,6 @@
 package com.nullteam.ragpicker.handler;
 
+import com.nullteam.ragpicker.service.serviceImpl.WechatService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpMessageHandler;
@@ -22,7 +23,7 @@ import java.util.Map;
 @Component
 public class SubscribeEventHandler implements WxMpMessageHandler {
 
-    private static final String SUBSCRIBE_EVENT_MESSAGE = "welcome messages"; // TODO: complete welcome msg
+    private static final String SUBSCRIBE_EVENT_MESSAGE = "欢迎使用RagPicker\n你可以点击下面的快速下单按钮下单";
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
