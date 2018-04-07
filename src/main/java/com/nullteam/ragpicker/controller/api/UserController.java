@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * <p>Title: UserController.java</p>
  * <p>Package: com.nullteam.ragpicker.controller.api</p>
- * <p>Description: </p>
+ * <p>Description: 用户相关接口控制器</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 02/13/18

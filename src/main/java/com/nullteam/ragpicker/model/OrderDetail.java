@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 /**
  * <p>Title: OrderDetail.java</p>
  * <p>Package: com.nullteam.ragpicker.model</p>
- * <p>Description: </p>
+ * <p>Description: 订单详情模型类</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 01/25/18

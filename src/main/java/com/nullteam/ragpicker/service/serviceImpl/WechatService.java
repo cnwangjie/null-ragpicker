@@ -33,7 +33,7 @@ import java.util.stream.Stream;
 /**
  * <p>Title: WechatService.java</p>
  * <p>Package: package com.nullteam.ragpicker.service.serviceImpl;</p>
- * <p>Description: </p>
+ * <p>Description: 微信service</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 02/13/18

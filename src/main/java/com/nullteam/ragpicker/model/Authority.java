@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * <p>Title: Authority.java</p>
  * <p>Package: com.nullteam.ragpicker.model</p>
- * <p>Description: </p>
+ * <p>Description: 权限模型类</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 01/19/18

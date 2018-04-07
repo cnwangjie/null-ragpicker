@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * <p>Title: AddressControllerTests.java</p>
  * <p>Package: com.nullteam.ragpicker.api</p>
- * <p>Description: </p>
+ * <p>Description: 地址相关接口控制器测试</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 02/03/18

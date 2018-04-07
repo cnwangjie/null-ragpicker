@@ -7,7 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 /**
  * <p>Title: UserService.java</p>
  * <p>Package: com.nullteam.ragpicker.service</p>
- * <p>Description: </p>
+ * <p>Description: 用户service</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 02/13/18

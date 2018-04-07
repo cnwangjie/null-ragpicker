@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * <p>Title: CollectorService.java</p>
  * <p>Package: com.nullteam.ragpicker.service</p>
- * <p>Description: </p>
+ * <p>Description: 回收员service</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 02/13/18

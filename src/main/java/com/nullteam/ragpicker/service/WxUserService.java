@@ -5,7 +5,7 @@ import com.nullteam.ragpicker.model.WxUser;
 /**
  * <p>Title: WxUserService.java</p>
  * <p>Package: com.nullteam.ragpicker.service</p>
- * <p>Description: </p>
+ * <p>Description: 微信用户service</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 02/13/18

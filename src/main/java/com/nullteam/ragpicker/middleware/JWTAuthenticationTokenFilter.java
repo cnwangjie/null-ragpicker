@@ -21,7 +21,7 @@ import java.util.Set;
 /**
  * <p>Title: JWTAuthenticationTokenFilter.java</p>
  * <p>Package: com.nullteam.ragpicker.middleware</p>
- * <p>Description: </p>
+ * <p>Description: JWT认证过滤器/p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 02/03/18

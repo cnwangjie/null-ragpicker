@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  * <p>Title: WxUserServiceImpl.java</p>
  * <p>Package: package com.nullteam.ragpicker.service.serviceImpl;</p>
- * <p>Description: </p>
+ * <p>Description: 微信用户service</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 02/13/18

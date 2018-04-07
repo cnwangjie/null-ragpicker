@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * <p>Title: JWTServiceImpl.java</p>
  * <p>Package: package com.nullteam.ragpicker.service.serviceImpl;</p>
- * <p>Description: </p>
+ * <p>Description: JWTservice实现</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 02/13/18

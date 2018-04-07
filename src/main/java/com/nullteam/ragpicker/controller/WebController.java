@@ -29,7 +29,7 @@ import java.net.URI;
 /**
  * <p>Title: WebController.java</p>
  * <p>Package: com.nullteam.ragpicker.controller</p>
- * <p>Description: </p>
+ * <p>Description: WEB相关接口控制器</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 01/30/18
