@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * <p>Title: JWTServiceTests.java</p>
  * <p>Package: com.nullteam.ragpicker</p>
- * <p>Description: </p>
+ * <p>Description: JWTservice测试 </p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 02/01/18

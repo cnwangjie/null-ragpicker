@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * <p>Title: Admin.java</p>
  * <p>Package: com.nullteam.ragpicker.model</p>
- * <p>Description: </p>
+ * <p>Description: 管理员模型类</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 01/19/18

@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * <p>Title: WechatProtalController.java</p>
  * <p>Package: com.nullteam.ragpicker.controller</p>
- * <p>Description: </p>
+ * <p>Description: 微信接口控制器</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 01/27/18

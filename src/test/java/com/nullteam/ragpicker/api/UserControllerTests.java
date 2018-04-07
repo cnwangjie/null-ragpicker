@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * <p>Title: UserControllerTests.java</p>
  * <p>Package: com.nullteam.ragpicker.api</p>
- * <p>Description: </p>
+ * <p>Description: 用户相关接口控制器测试</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 03/14/18

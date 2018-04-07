@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * <p>Title: Order.java</p>
  * <p>Package: com.nullteam.ragpicker.model</p>
- * <p>Description: </p>
+ * <p>Description: 订单模型类</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 01/19/18

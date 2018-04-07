@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * <p>Title: WxUser.java</p>
  * <p>Package: com.nullteam.ragpicker.model</p>
- * <p>Description: </p>
+ * <p>Description: 微信用户模型类</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 01/19/18

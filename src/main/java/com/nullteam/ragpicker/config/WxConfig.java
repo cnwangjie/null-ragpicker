@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * <p>Title: WxConfig.java</p>
  * <p>Package: com.nullteam.ragpicker.config</p>
- * <p>Description: </p>
+ * <p>Description: 微信配置类</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 01/27/18

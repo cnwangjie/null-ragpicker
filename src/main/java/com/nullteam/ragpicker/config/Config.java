@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * <p>Title: Config.java</p>
  * <p>Package: com.nullteam.ragpicker.config</p>
- * <p>Description: </p>
+ * <p>Description: 基本配置类</p>
  * <p>Copyright: 2018 the original author or authors.</p>
 
  * @date 01/27/18
