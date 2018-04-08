@@ -66,6 +66,8 @@ public class WechatProtalController {
     @RequestMapping(value = "")
     public void WechatMessage(HttpServletRequest req, HttpServletResponse res) throws IOException {
         // refer: https://github.com/Wechat-Group/weixin-java-tools-springmvc/blob/master/src/main/java/com/github/weixin/demo/controller/CoreController.java#L76-L96
+        req.setCharacterEncoding("UTF-8");
+        res.setCharacterEncoding("UTF-8");
         if ("aes".equals(req.getParameter("encrypt_type"))) {
             String msgSignature = req.getParameter("msg_signature");
             String nonce = req.getParameter("nonce");

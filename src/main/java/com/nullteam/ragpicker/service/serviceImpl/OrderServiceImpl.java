@@ -7,6 +7,7 @@ import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.binarywang.wxpay.service.impl.WxPayServiceImpl;
 import com.nullteam.ragpicker.config.WxConfig;
 import com.nullteam.ragpicker.model.*;
+import com.nullteam.ragpicker.repository.OrderDetailRepository;
 import com.nullteam.ragpicker.repository.OrderRepository;
 import com.nullteam.ragpicker.service.AddressService;
 import com.nullteam.ragpicker.service.CollectorService;
@@ -39,6 +40,8 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
+    private final OrderDetailRepository orderDetailRepository;
+
     private final UserService userService;
 
     private final AddressService addressService;
@@ -52,11 +55,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository,
-                            UserService userService,
+                            OrderDetailRepository orderDetailRepository, UserService userService,
                             AddressService addressService,
                             CollectorService collectorService,
                             WxConfig wxConfig) {
         this.orderRepository = orderRepository;
+        this.orderDetailRepository = orderDetailRepository;
         this.userService = userService;
         this.addressService = addressService;
         this.collectorService = collectorService;
@@ -81,6 +85,10 @@ public class OrderServiceImpl implements OrderService {
                 + md5(String.valueOf(System.currentTimeMillis()))).substring(0, 30).toUpperCase();
         order.setOrderNo(orderNo);
         order = orderRepository.save(order);
+        for (OrderDetail orderDetail : orderDetails) {
+            orderDetail.setOrder(order);
+            orderDetailRepository.save(orderDetail);
+        }
         // TODO: perhaps should allow creating order if no collector in the location
         allotCollectorForOrder(order);
         return order;

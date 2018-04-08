@@ -61,7 +61,7 @@ public class CurrentOrderBtnClickEventHandler implements WxMpMessageHandler {
                                     WxMpService wxMpService,
                                     WxSessionManager sessionManager) throws WxErrorException {
         String msg;
-        String openid = wxMessage.getOpenId();
+        String openid = wxMessage.getFromUser();
         Collector collector = wxUserService.getOneByWxId(openid).getCollector();
         do {
             if (collector == null) {
@@ -87,7 +87,7 @@ public class CurrentOrderBtnClickEventHandler implements WxMpMessageHandler {
                     new SimpleDateFormat(DATE_FORMAT_TEMPLATE).format(nearlyOrder.getCreatedAt()),
                     nearlyOrder.getLocDetail(),
                     orderDetail,
-                    wechatService.buildOauthUrl("collector", "/collector/order/allotted"));
+                    wechatService.buildOauthUrl("collector", "/order/allotted"));
         } while (false);
 
         return WxMpXmlOutMessage.TEXT()

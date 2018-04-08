@@ -41,6 +41,21 @@ public class ModelTests {
 
     private Logger logger = Logger.getLogger(this.getClass().toString());
 
+    private static final String[][] cates_seed = {
+        {"废钢","两","10"},
+        {"废铁","两","8"},
+        {"废铝","两","50"},
+        {"废铜","两","9"},
+        {"废报纸","两","13"},
+        {"废纸箱","两","11"},
+        {"旧书刊杂志","两","12"},
+        {"玻璃渣","斤","6"},
+        {"通用废塑料","两","22"},
+        {"工程废塑料","两","26"}
+    };
+    private static final Integer[] status_seed = {0, 10, 12, 2, 40};
+    private static final Integer[] location_seed = {110000, 110101, 110102, 110105, 110106, 110107, 110108, 110109, 110111, 110112, 110113, 110114, 110115, 110116, 110117};
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -77,44 +92,42 @@ public class ModelTests {
             entityManager.persist(user);
             entityManager.flush();
         }
-        int[] locationSeed = {110000, 110101, 110102, 110105, 110106, 110107, 110108, 110109, 110111, 110112, 110113, 110114, 110115, 110116, 110117};
         for (int i = 0; i < 30; i += 1) {
             Collector collector = new Collector();
             collector.setInfo(entityManager.find(WxUser.class, i + 31));
             collector.setName(faker.name().fullName());
             collector.setTel(faker.phoneNumber().cellPhone());
-            collector.setLocation(locationSeed[i / 2]);
+            collector.setLocation(location_seed[i / 2]);
             entityManager.persist(collector);
             entityManager.flush();
         }
         for (int i = 0; i < 45; i += 1) {
             Address address = new Address();
-            address.setLocation(locationSeed[i / 3]);
+            address.setLocation(location_seed[i / 3]);
             address.setDetail(faker.address().streetAddress());
             address.setTel(faker.phoneNumber().cellPhone());
             address.setUser(entityManager.find(User.class, (int)(i / 1.5) + 1));
             entityManager.persist(address);
             entityManager.flush();
         }
-        for (int i = 0; i < 10; i += 1) {
+        for (String[] i : cates_seed) {
             Cate cate = new Cate();
-            cate.setName(faker.hacker().noun());
-            cate.setUnit("个");
-            cate.setPrice(faker.number().numberBetween(1, 100));
+            cate.setName(i[0]);
+            cate.setUnit(i[1]);
+            cate.setPrice(Integer.valueOf(i[2]));
             entityManager.persist(cate);
             entityManager.flush();
         }
-        int[] statusSeed = {0, 10, 11, 12, 2, 40};
         for (int i = 0; i < 60; i += 1) {
             Order order = new Order();
             order.setUser(entityManager.find(User.class, faker.number().numberBetween(1, 30)));
             order.setCollector(entityManager.find(Collector.class, faker.number().numberBetween(1, 30)));
             order.setTel(faker.phoneNumber().cellPhone());
-            order.setLocation(locationSeed[i / 4]);
-            order.setLocDetail(faker.address().fullAddress());
-            order.setRemark(RandomStringUtils.randomAscii(faker.number().numberBetween(0, 200)));
-            order.setOrderNo(faker.letterify(StringUtils.repeat("?", 30)));
-            order.setStatus(statusSeed[faker.number().numberBetween(0, 6)]);
+            order.setLocation(location_seed[i / 4]);
+            order.setLocDetail(faker.address().streetAddress());
+            order.setRemark(RandomStringUtils.randomAlphabetic(faker.number().numberBetween(0, 200)));
+            order.setOrderNo(faker.letterify(StringUtils.repeat("?", 30)).toUpperCase());
+            order.setStatus(status_seed[faker.number().numberBetween(0, status_seed.length)]);
             entityManager.persist(order);
             entityManager.flush();
             Integer amount = 0;
